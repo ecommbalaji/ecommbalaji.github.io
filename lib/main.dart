@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Your App Title', // Replace with your app's title
+        title: 'Balaji Ecommerce', // Replace with your app's title
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
