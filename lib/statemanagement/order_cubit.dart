@@ -31,7 +31,8 @@ class OrderCubit extends Cubit<List<OrderItem>> {
   }
 
   void removeOrderItem(OrderItem itemToRemove) {
-    state.remove(itemToRemove);
+    final index = state.indexWhere((item) => item.itemId == itemToRemove.itemId);
+    state.removeAt(index);
     emit(List.from(state));
   }
 

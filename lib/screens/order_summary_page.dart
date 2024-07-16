@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:webcatalog/statemanagement/cart_counter_cubit.dart';
 import '../ordersummary/order_summary_widget.dart';
 import '../statemanagement/order_cubit.dart';
 import '../vo/order_item.dart';
@@ -25,10 +26,13 @@ class OrderSummaryPage extends StatelessWidget {
                     return OrderItemWidget(
                       orderItem: item,
                       onRemove: () {
+                        context.read<CartCubit>().removeFromCart(item.qty);
                         context.read<OrderCubit>().removeOrderItem(item);
                       },
                       onQuantityChanged: (newQty) {
+                        context.read<CartCubit>().addToCart(newQty!-item.qty);
                         context.read<OrderCubit>().updateOrderQty(item, newQty!);
+
                       },
                     );
                   },
