@@ -187,11 +187,12 @@ class ReceiptPage extends StatelessWidget {
             th { background-color: #f2f2f2; }
             .center { text-align: center; }
             .bold { font-weight: bold; }
+            .large { font-size: 20; }
           </style>
         </head>
         <body>
           <h1 class="center bold">Order Request Receipt</h1>
-          <p class="bold">Order Number: $orderNumber</p>
+          <p class="bold large">Order Number: $orderNumber</p>
           <p>Date: $formattedDate</p>
 
           <table>
@@ -207,20 +208,20 @@ class ReceiptPage extends StatelessWidget {
       final item = orderItems[i];
       htmlContent += '''
         <tr>
-          <td>${i + 1}</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;${i + 1}</td>
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
-          <td style='text-align: center;' >${item.qty}</td>
+          <td > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.qty}</td>
         </tr>''';
     }
 
     htmlContent += '''
           </table>
-          <div style="text-align: right;">
-            <p class="bold">Total Products: $totalProducts</p>
-            <p class="bold">Total Quantity: $totalQuantity</p>
-          </div>
+          <span>
+            Total Products: $totalProducts <br/>
+            Total Quantity: $totalQuantity
+             </span>
         </body>
       </html>''';
 

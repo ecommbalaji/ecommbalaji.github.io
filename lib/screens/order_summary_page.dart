@@ -52,7 +52,7 @@ class OrderSummaryPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Proceed to CheckOut'),
+              child: Text('Proceed to Checkout'),
             ),
           ),
         ],
