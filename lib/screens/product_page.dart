@@ -154,7 +154,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                           DataColumn(label: Text('Category')),
                           DataColumn(label: Text('SubCategory')),
                           DataColumn(label: Text('Quantity')),
-                          DataColumn(label: Text('Add to Cart')),
+                          DataColumn(label: Text('')),
                         ],
                         rows: List.generate(filteredItems.length, (index) {
                           final item = filteredItems[index];

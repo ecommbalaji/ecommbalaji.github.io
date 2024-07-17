@@ -46,11 +46,11 @@ class ReceiptPage extends StatelessWidget {
           children: [
             Text(
               'Order Number: $orderNumber',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20, ),
             ),
             Text(
               'Date: $formattedDate',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontSize: 20),
             ),
             SizedBox(height: 20),
 
@@ -64,31 +64,31 @@ class ReceiptPage extends StatelessWidget {
                     DataColumn(
                       label: Text(
                         'Sr No',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Product Name',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Category',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Subcategory',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'Quantity',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
                   ],
@@ -99,19 +99,19 @@ class ReceiptPage extends StatelessWidget {
                         (entry) => DataRow(
                       cells: [
                         DataCell(
-                          Text('${entry.key + 1}'),
+                          Text('${entry.key + 1}',  style: TextStyle( fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.productName),
+                          Text(entry.value.productName,  style: TextStyle( fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.category ?? ''),
+                          Text(entry.value.category ?? '',  style: TextStyle( fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.subCategory ?? ''),
+                          Text(entry.value.subCategory ?? '',  style: TextStyle( fontSize: 16)),
                         ),
                         DataCell(
-                          Text('${entry.value.qty}'),
+                          Text('${entry.value.qty}',  style: TextStyle( fontSize: 16)),
                         ),
                       ],
                     ),
@@ -129,11 +129,11 @@ class ReceiptPage extends StatelessWidget {
                 children: [
                   Text(
                     'Total Products: $totalProducts',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
                   ),
                   Text(
                     'Total Quantity: $totalQuantity',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
                   ),
                 ],
               ),
