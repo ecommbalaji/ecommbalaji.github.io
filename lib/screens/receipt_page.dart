@@ -23,9 +23,11 @@ class ReceiptPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Order Request Receipt',
-          style: TextStyle(fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         actions: [
           IconButton(
@@ -42,144 +44,79 @@ class ReceiptPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Order Number: $orderNumber', style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black)),
-            Text('Date: $formattedDate', style: TextStyle(color: Colors.black)),
-            SizedBox(height: 20),
-
-            // Address left aligned
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('To,', style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black)),
-                  Text('Balaji Print Media',
-                      style: TextStyle(color: Colors.black)),
-                  Text('Shop No:-586, 1st Floor',
-                      style: TextStyle(color: Colors.black)),
-                  Text('Sector-45 C', style: TextStyle(color: Colors.black)),
-                  Text('Chandigarh', style: TextStyle(color: Colors.black)),
-                  Text('160047 Chandigarh',
-                      style: TextStyle(color: Colors.black)),
-                  Text('India', style: TextStyle(color: Colors.black)),
-                  Text('GSTIN 04BMDPM4905J1Z5',
-                      style: TextStyle(color: Colors.black)),
-                ],
-              ),
+            Text(
+              'Order Number: $orderNumber',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            Text(
+              'Date: $formattedDate',
+              style: TextStyle(color: Colors.black),
             ),
             SizedBox(height: 20),
-            Text('Please supply the below items:', style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black)),
-            SizedBox(height: 10),
 
             // Scrollable table
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Table(
-                  border: TableBorder.all(color: Colors.black),
-                  columnWidths: const {
-                    0: FlexColumnWidth(1),
-                    1: FlexColumnWidth(2),
-                    2: FlexColumnWidth(8),
-                  },
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey.shade300),
-                      children: const [
-                        TableCell(
-                          verticalAlignment: TableCellVerticalAlignment.middle,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Sr No', style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
-                            ),
-                          ),
+                child: DataTable(
+                  columnSpacing: 20,
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        'Sr No',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Product Name',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Category',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Subcategory',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Quantity',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                  rows: orderItems
+                      .asMap()
+                      .entries
+                      .map(
+                        (entry) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text('${entry.key + 1}'),
                         ),
-                        TableCell(
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Image', style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
-                            ),
-                          ),
+                        DataCell(
+                          Text(entry.value.productName),
                         ),
-                        TableCell(
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Details', style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black)),
-                            ),
-                          ),
+                        DataCell(
+                          Text(entry.value.category ?? ''),
+                        ),
+                        DataCell(
+                          Text(entry.value.subCategory ?? ''),
+                        ),
+                        DataCell(
+                          Text('${entry.value.qty}'),
                         ),
                       ],
                     ),
-                    ...orderItems
-                        .asMap()
-                        .entries
-                        .map((entry) {
-                      int index = entry.key;
-                      OrderItem item = entry.value;
-                      return TableRow(
-                        children: [
-                          TableCell(
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('${index + 1}',
-                                    style: TextStyle(color: Colors.black)),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 80,
-                                height: 80,
-                                child: item.imageUrl != null
-                                    ? Image.network(
-                                    item.imageUrl!, fit: BoxFit.contain)
-                                    : Container(color: Colors.grey.shade300),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('ID: ${item.itemId}', style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black)),
-                                  Text(item.productName, style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black)),
-                                  Text('Quantity: ${item.qty}',
-                                      style: TextStyle(color: Colors.black)),
-                                  if (item.category != null) Text(
-                                      'Category: ${item.category!}',
-                                      style: TextStyle(color: Colors.black)),
-                                  if (item.subCategory != null) Text(
-                                      'Subcategory: ${item.subCategory!}',
-                                      style: TextStyle(color: Colors.black)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  ],
+                  )
+                      .toList(),
                 ),
               ),
             ),
@@ -190,10 +127,14 @@ class ReceiptPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('Total Products: $totalProducts', style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black)),
-                  Text('Total Quantity: $totalQuantity', style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black)),
+                  Text(
+                    'Total Products: $totalProducts',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                  Text(
+                    'Total Quantity: $totalQuantity',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
                 ],
               ),
             ),
@@ -201,18 +142,19 @@ class ReceiptPage extends StatelessWidget {
         ),
       ),
     );
-
   }
+
   Future<void> convertHtmlToPdf() async {
     final newpdf = html2pdf.Document();
     var htmlStr = generateHtml();
 
     final widgets = await html2pdf.HTMLToPdf().convert(htmlStr);
     newpdf.addPage(html2pdf.MultiPage(
-        maxPages: 200,
-        build: (context) {
-          return widgets;
-        }));
+      maxPages: 200,
+      build: (context) {
+        return widgets;
+      },
+    ));
     final bytes = await newpdf.save();
     final blob = html.Blob([bytes], 'application/pdf');
     final url = html.Url.createObjectUrlFromBlob(blob);
@@ -245,12 +187,6 @@ class ReceiptPage extends StatelessWidget {
             th { background-color: #f2f2f2; }
             .center { text-align: center; }
             .bold { font-weight: bold; }
-            img {
-              max-width: 100px; 
-              max-height: 100px; 
-              height:100px; 
-              width: 100px;
-            }
           </style>
         </head>
         <body>
@@ -258,42 +194,31 @@ class ReceiptPage extends StatelessWidget {
           <p class="bold">Order Number: $orderNumber</p>
           <p>Date: $formattedDate</p>
 
-          <h4>To:</h4>
-          <p class="bold">Balaji Print Media</p>
-          <p>Shop No:-586, 1st Floor</p>
-          <p>Sector-45 C</p>
-          <p>Chandigarh</p>
-          <p>160047 Chandigarh</p>
-          <p>India</p>
-          <p>GSTIN 04BMDPM4905J1Z5</p>
-
-          <h4>Please supply the below items:</h4>
           <table>
             <tr>
               <th>Sr No</th>
-              <th>Details</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Subcategory</th>
+              <th>Quantity</th>
             </tr>''';
 
     for (var i = 0; i < orderItems.length; i++) {
       final item = orderItems[i];
       htmlContent += '''
         <tr>
-              <td class="center">${i + 1}</td>
-              <td class="center">
-                <p class="bold">ID: ${item.itemId}<br/>
-                ${item.productName}<br/>
-                Quantity: ${item.qty}<br/>
-                ${item.category != null ? 'Category: ${item.category}<br/>' : ''}
-                ${item.subCategory != null ? 'Subcategory: ${item.subCategory}</p>' : ''}
-              </td>
-           
-            </tr>''';
+          <td>${i + 1}</td>
+          <td>${item.productName}</td>
+          <td>${item.category ?? ''}</td>
+          <td>${item.subCategory ?? ''}</td>
+          <td style='text-align: center;' >${item.qty}</td>
+        </tr>''';
     }
 
     htmlContent += '''
           </table>
           <div style="text-align: right;">
-            <p class="bold">Total Products: $totalProducts</p><br/>
+            <p class="bold">Total Products: $totalProducts</p>
             <p class="bold">Total Quantity: $totalQuantity</p>
           </div>
         </body>
@@ -301,8 +226,4 @@ class ReceiptPage extends StatelessWidget {
 
     return htmlContent;
   }
-
 }
-
-
-

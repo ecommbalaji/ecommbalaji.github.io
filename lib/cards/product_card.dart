@@ -14,7 +14,7 @@ class ProductCard extends StatefulWidget {
   _ProductCardState createState() => _ProductCardState();
 }
 
-class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClientMixin  {
+class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -32,7 +32,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10.0),
-              CachedImageWidget( imageUrl: widget.orderItem.imageUrl!),
+              CachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
               const SizedBox(height: 10.0),
               // Item ID
               Text(
@@ -44,9 +44,9 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               const SizedBox(height: 5.0),
               // Product Name
               Tooltip(
-                message: widget.orderItem.productName!,
+                message: widget.orderItem.productName,
                 child: Text(
-                  widget.orderItem.productName!,
+                  widget.orderItem.productName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -58,7 +58,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               const SizedBox(height: 5.0),
               // Product Category
               Text(
-                'Category: ${widget.orderItem.category}',
+                'Category: ${widget.orderItem.category ?? ''}',
                 style: TextStyle(
                   fontSize: 14.0,
                 ),
@@ -66,7 +66,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               const SizedBox(height: 5.0),
               // Product Subcategory
               Text(
-                'Subcategory: ${widget.orderItem.subCategory}',
+                'Subcategory: ${widget.orderItem.subCategory ?? ''}',
                 style: TextStyle(
                   fontSize: 14.0,
                 ),
@@ -92,7 +92,5 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
-
