@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webcatalog/datarows/order_data_row.dart';
 import '../badge/badge.dart';
 import '../cards/product_card.dart';
 import '../dropdowns/category_subcategory_filter.dart';
@@ -146,35 +147,13 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                         dataRowHeight: 60.0,
                         columnSpacing: 20.0,
                         columns: [
-                          DataColumn(
-                            label: Center(child: Text('Sr No')),
-                          ),
-                          DataColumn(label: Text('Item ID')),
-                          DataColumn(label: Text('Product Name')),
-                          DataColumn(label: Text('Category')),
-                          DataColumn(label: Text('SubCategory')),
-                          DataColumn(label: Text('Quantity')),
-                          DataColumn(label: Text('')),
+                          DataColumn(label: Text(''))
                         ],
                         rows: List.generate(filteredItems.length, (index) {
                           final item = filteredItems[index];
                           return DataRow(
                             cells: [
-                              DataCell(Container(child: Text('${index + 1}'))),
-                              DataCell(Text(item.itemId)),
-                              DataCell(Text(item.productName)),
-                              DataCell(Text(item.category ?? '')),
-                              DataCell(Text(item.subCategory ?? '')),
-                              DataCell(
-                                QuantitySelector(
-                                  onChanged: (value) {
-                                    setState(() {
-                                      item.qty = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              DataCell(AddToCartButton(orderItem: item, selectedQuantity: item.qty)),
+                              DataCell(OrderDataRow(index: index, item: item))
                             ],
                           );
                         }),
