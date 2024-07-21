@@ -20,7 +20,7 @@ class _QuantitySelectorState extends State<QuantitySelector> {
       child: DropdownButton2<int>(
         isExpanded: false,
         isDense: true,
-        items: List.generate(101, (index) => index)
+        items: List.generate(1001, (index) => index)
             .map((value) => DropdownMenuItem<int>(
           child: Text('$value'),
           value: value,

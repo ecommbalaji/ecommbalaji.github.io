@@ -26,8 +26,8 @@ class _OrderDataRowState extends State<OrderDataRow> {
                 Expanded(child: Text(widget.item.productName)),
                 Expanded(child: Text(widget.item.category ?? '')),
                 Expanded(child: Text(widget.item.subCategory ?? '')),
-                Expanded(
-                  child: QuantitySelector(
+               Expanded( child:
+                QuantitySelector(
                     onChanged: (value) {
                       setState(() {
                         widget.selectedQty = value;
@@ -35,10 +35,11 @@ class _OrderDataRowState extends State<OrderDataRow> {
                       });
                     },
                   ),
-                ),
-                Expanded(
-                  child: AddToCartButton(orderItem: widget.item, selectedQuantity: widget.selectedQty),
-                ),
+
+               ),
+
+             AddToCartButton(orderItem: widget.item, selectedQuantity: widget.selectedQty),
+
               ],
             ),
           );

@@ -13,8 +13,8 @@ class OrderCubit extends Cubit<List<OrderItem>> {
     if (existingIndex != -1) {
       int existingQty = state[existingIndex].qty;
       // Item already exists, update the quantity
-      if( existingQty + selQty > 100){
-        //cannot exceed max limit (100)
+      if( existingQty + selQty > 1000){
+        //cannot exceed max limit (1000)
         return false;
       }
 

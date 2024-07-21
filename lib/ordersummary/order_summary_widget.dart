@@ -71,7 +71,7 @@ class OrderItemWidget extends StatelessWidget {
                     DropdownButton<int>(
                       value: orderItem.qty,
                       onChanged: onQuantityChanged,
-                      items: List.generate(100, (i) => i + 1)
+                      items: List.generate(1001, (i) => i + 1)
                           .map((value) => DropdownMenuItem<int>(
                         value: value,
                         child: Text(value.toString()),

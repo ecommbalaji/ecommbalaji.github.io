@@ -6,6 +6,7 @@ import '../dropdowns/category_subcategory_filter.dart';
 import '../dropdowns/quantity_selector.dart';
 import '../button/add_to_cart_button.dart';
 import '../service/order_item_service.dart';
+import '../table/product_table.dart';
 import '../vo/order_item.dart';
 
 class ProductPage extends StatefulWidget {
@@ -138,26 +139,11 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                     },
                   ),
                   SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width,
-                      ),
-                      child: DataTable(
-                        headingRowHeight: 50.0,
-                        dataRowHeight: 60.0,
-                        columnSpacing: 20.0,
-                        columns: [
-                          DataColumn(label: Text(''))
-                        ],
-                        rows: List.generate(filteredItems.length, (index) {
-                          final item = filteredItems[index];
-                          return DataRow(
-                            cells: [
-                              DataCell(OrderDataRow(index: index, item: item))
-                            ],
-                          );
-                        }),
-                      ),
+
+                    child: SizedBox(
+                     height: 800,
+                      width: MediaQuery.of(context).size.width,
+                      child:ProductTable( gridItems:filteredItems),
                     ),
                   ),
                 ],

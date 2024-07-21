@@ -17,7 +17,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
   void _addProductToCart(BuildContext context) {
   bool canAdd =  context.read<OrderCubit>().addOrderItem(widget.orderItem, widget.selectedQuantity);
   if(!canAdd){
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Quantity for a given product cannot be more than 100')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Quantity for a given product cannot be more than 1000')));
   } else {
     context.read<CartCubit>().addToCart(widget.selectedQuantity);
   }
