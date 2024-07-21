@@ -1,9 +1,9 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+
 import 'package:webcatalog/statemanagement/cart_counter_cubit.dart';
+import 'contact_details.dart';
 import '../ordersummary/order_summary_widget.dart';
 import '../statemanagement/order_cubit.dart';
 import '../vo/order_item.dart';
@@ -19,6 +19,7 @@ class OrderSummaryPage extends StatelessWidget {
           Expanded(
             child: BlocBuilder<OrderCubit, List<OrderItem>>(
               builder: (context, orderItems) {
+                final orderItems = context.read<OrderCubit>().state;
                 return ListView.builder(
                   itemCount: orderItems.length,
                   itemBuilder: (context, index) {
@@ -32,7 +33,6 @@ class OrderSummaryPage extends StatelessWidget {
                       onQuantityChanged: (newQty) {
                         context.read<CartCubit>().addToCart(newQty!-item.qty);
                         context.read<OrderCubit>().updateOrderQty(item, newQty!);
-
                       },
                     );
                   },
@@ -44,15 +44,14 @@ class OrderSummaryPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                final orderItems = context.read<OrderCubit>().state;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ReceiptPage(orderItems: orderItems, orderNumber: generateCustomString(),),
+                    builder: (context) => CustomerFormWidget(),
                   ),
                 );
               },
-              child: Text('Proceed to Checkout'),
+              child: Text('Contact Details'),
             ),
           ),
         ],
@@ -60,22 +59,7 @@ class OrderSummaryPage extends StatelessWidget {
     );
   }
 
-  String generateCustomString() {
-    // 1. Get current date and time
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('ddMMyyyyHHmmss').format(now);
 
-    // 2. Generate 4 random alphabets
-    const chars = 'abcdefghijklmnopqrstuvwxyz';
-    Random random = Random();
-    String randomAlphabets = String.fromCharCodes(
-        Iterable.generate(4, (_) => chars.codeUnitAt(random.nextInt(chars.length)))
-    );
-
-    // 3. Combine date and alphabets
-    String result = formattedDate + randomAlphabets;
-    return result.toUpperCase();
-  }
 
 // Example usage:
 

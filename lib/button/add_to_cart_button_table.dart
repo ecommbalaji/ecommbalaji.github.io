@@ -4,16 +4,16 @@ import 'package:webcatalog/vo/order_item.dart';
 import '../statemanagement/cart_counter_cubit.dart';
 import '../statemanagement/order_cubit.dart';
 
-class AddToCartButton extends StatefulWidget {
+class AddToCartButtonTable extends StatefulWidget {
   final int selectedQuantity;
   final OrderItem orderItem;
 
-  const AddToCartButton({super.key, required this.selectedQuantity, required this.orderItem});
+  const AddToCartButtonTable({super.key, required this.selectedQuantity, required this.orderItem});
   @override
-  _AddToCartButtonState createState() => _AddToCartButtonState();
+  _AddToCartButtonTableState createState() => _AddToCartButtonTableState();
 }
 
-class _AddToCartButtonState extends State<AddToCartButton> {
+class _AddToCartButtonTableState extends State<AddToCartButtonTable> {
   void _addProductToCart(BuildContext context) {
   bool canAdd =  context.read<OrderCubit>().addOrderItem(widget.orderItem, widget.selectedQuantity);
   if(!canAdd){

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-class QuantitySelector extends StatefulWidget {
+class ProductTableQtySelector extends StatefulWidget {
   final ValueChanged<int> onChanged;
 
-  const QuantitySelector({Key? key, required this.onChanged}) : super(key: key);
+  const ProductTableQtySelector({Key? key, required this.onChanged}) : super(key: key);
 
   @override
-  _QuantitySelectorState createState() => _QuantitySelectorState();
+  _ProductTableQtySelectorState createState() => _ProductTableQtySelectorState();
 }
 
-class _QuantitySelectorState extends State<QuantitySelector> {
+class _ProductTableQtySelectorState extends State<ProductTableQtySelector> {
   int selectedValue = 0; // Initial selected quantity
 
   @override
@@ -20,7 +20,7 @@ class _QuantitySelectorState extends State<QuantitySelector> {
       child: DropdownButton2<int>(
         isExpanded: false,
         isDense: true,
-        items: List.generate(1001, (index) => index)
+        items: List.generate(1000, (index) => index)
             .map((value) => DropdownMenuItem<int>(
           child: Text('$value'),
           value: value,

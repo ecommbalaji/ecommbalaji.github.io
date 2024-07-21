@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:webcatalog/datarows/order_data_row.dart';
 import '../badge/badge.dart';
 import '../cards/product_card.dart';
 import '../dropdowns/category_subcategory_filter.dart';
-import '../dropdowns/quantity_selector.dart';
-import '../button/add_to_cart_button.dart';
+import '../dropdowns/product_table_qty_selector.dart';
+import '../button/add_to_cart_button_grid.dart';
 import '../service/order_item_service.dart';
 import '../table/product_table.dart';
 import '../vo/order_item.dart';

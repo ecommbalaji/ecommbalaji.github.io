@@ -11,8 +11,8 @@ class OrderItemWidget extends StatelessWidget {
     required this.orderItem,
     required this.onRemove,
     this.onQuantityChanged, // Nullable ValueChanged<int?>
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class OrderItemWidget extends StatelessWidget {
                     DropdownButton<int>(
                       value: orderItem.qty,
                       onChanged: onQuantityChanged,
-                      items: List.generate(1001, (i) => i + 1)
+                      items: List.generate(1000, (i) => i)
                           .map((value) => DropdownMenuItem<int>(
                         value: value,
                         child: Text(value.toString()),

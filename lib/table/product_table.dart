@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:webcatalog/button/add_to_cart_button_table.dart';
 import 'package:webcatalog/vo/order_item.dart';
 
-import '../button/add_to_cart_button.dart';
-import '../dropdowns/quantity_selector.dart';
+import '../button/add_to_cart_button_grid.dart';
+import '../dropdowns/product_table_qty_selector.dart';
 
 class ProductTable extends StatefulWidget {
   final List<OrderItem> gridItems;
@@ -83,7 +84,7 @@ class _ProductTableState extends State<ProductTable> {
         padding: const EdgeInsets.symmetric(vertical: 4.0),
         child: Row(
           children: [
-            _buildDataCell('${index + 1}', 0.1, TextAlign.center),
+            _buildDataCell('${index}', 0.1, TextAlign.center),
             _buildDataCell(item.itemId, 0.15, TextAlign.center),
             _buildDataCell(item.productName, 0.2, TextAlign.left),
             _buildDataCell(item.category ?? '', 0.15, TextAlign.center),
@@ -91,20 +92,20 @@ class _ProductTableState extends State<ProductTable> {
             Expanded(
               flex: (0.10 * 100).toInt(),
 
-              child: QuantitySelector(
+              child: ProductTableQtySelector(
 
                 onChanged: (value) {
                   setState(() {
-                    widget.selectedQty = value;
+                    widget.gridItems[index].qty = value;
                   });
                 },
               ),
             ),
         Expanded(
             flex: (0.15 * 100).toInt(),
-            child: AddToCartButton(
+            child: AddToCartButtonTable(
               orderItem: widget.gridItems[index],
-              selectedQuantity: widget.selectedQty,
+              selectedQuantity: widget.gridItems[index].qty,
             )
         ),
           ],

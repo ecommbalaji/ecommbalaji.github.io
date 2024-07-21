@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:webcatalog/dropdowns/grid_qty_selector.dart';
 import 'package:webcatalog/vo/order_item.dart';
 
-import '../button/add_to_cart_button.dart';
-import '../dropdowns/quantity_selector.dart';
+import '../button/add_to_cart_button_grid.dart';
+import '../dropdowns/product_table_qty_selector.dart';
 import '../image/cached_image.dart';
 
 class ProductCard extends StatefulWidget {
@@ -75,9 +76,9 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Add to Cart Button
               Row(
                 children: [
-                  AddToCartButton(selectedQuantity: widget.selectedQty, orderItem: widget.orderItem),
+                  AddToCartButtonGrid(selectedQuantity: widget.selectedQty, orderItem: widget.orderItem),
                   Spacer(),
-                  QuantitySelector(onChanged: (int value) {
+                  GridQtySelector(onChanged: (int value) {
                     setState(() {
                       widget.selectedQty = value;
                     });

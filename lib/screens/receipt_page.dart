@@ -7,8 +7,17 @@ import '../vo/order_item.dart';
 class ReceiptPage extends StatelessWidget {
   final List<OrderItem> orderItems;
   final String orderNumber;
+  final String nameOrBranch;
+  final String mobile;
+  final String email;
 
-  ReceiptPage({required this.orderItems, required this.orderNumber});
+  ReceiptPage({
+    required this.orderItems,
+    required this.orderNumber,
+    required this.nameOrBranch,
+    required this.mobile,
+    required this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +51,42 @@ class ReceiptPage extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Order Number: $orderNumber',
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20, ),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
+              ),
             ),
             Text(
               'Date: $formattedDate',
               style: TextStyle(color: Colors.black, fontSize: 20),
             ),
             SizedBox(height: 20),
-
+            Text(
+              'Customer Details:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              'Name or Branch Name: $nameOrBranch',
+              style: TextStyle(color: Colors.black, fontSize: 18),
+            ),
+            Text(
+              'Mobile Number: $mobile',
+              style: TextStyle(color: Colors.black, fontSize: 18),
+            ),
+            Text(
+              'Email Address: $email',
+              style: TextStyle(color: Colors.black, fontSize: 18),
+            ),
+            SizedBox(height: 20),
             // Scrollable table
             Expanded(
               child: SingleChildScrollView(
@@ -99,19 +132,19 @@ class ReceiptPage extends StatelessWidget {
                         (entry) => DataRow(
                       cells: [
                         DataCell(
-                          Text('${entry.key + 1}',  style: TextStyle( fontSize: 16)),
+                          Text('${entry.key + 1}', style: TextStyle(fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.productName,  style: TextStyle( fontSize: 16)),
+                          Text(entry.value.productName, style: TextStyle(fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.category ?? '',  style: TextStyle( fontSize: 16)),
+                          Text(entry.value.category ?? '', style: TextStyle(fontSize: 16)),
                         ),
                         DataCell(
-                          Text(entry.value.subCategory ?? '',  style: TextStyle( fontSize: 16)),
+                          Text(entry.value.subCategory ?? '', style: TextStyle(fontSize: 16)),
                         ),
                         DataCell(
-                          Text('${entry.value.qty}',  style: TextStyle( fontSize: 16)),
+                          Text('${entry.value.qty}', style: TextStyle(fontSize: 16)),
                         ),
                       ],
                     ),
@@ -181,20 +214,23 @@ class ReceiptPage extends StatelessWidget {
       <html>
         <head>
           <style>
-            body { font-family: sans-serif;background-color: lightblue; }
+            body { font-family: sans-serif; background-color: lightblue; }
             table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid black; padding: 8px; text-align: left; }
             th { background-color: #f2f2f2; }
             .center { text-align: center; }
             .bold { font-weight: bold; }
-            .large { font-size: 20; }
+            .large { font-size: 20px; }
           </style>
         </head>
         <body>
           <h1 class="center bold">Order Request Receipt</h1>
           <p class="bold large">Order Number: $orderNumber</p>
           <p>Date: $formattedDate</p>
-
+          <p><strong>Customer Details:</strong></p>
+          <p>Name or Branch Name: $nameOrBranch</p>
+          <p>Mobile Number: $mobile</p>
+          <p>Email Address: $email</p>
           <table>
             <tr>
               <th>Sr No</th>
@@ -208,20 +244,18 @@ class ReceiptPage extends StatelessWidget {
       final item = orderItems[i];
       htmlContent += '''
         <tr>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;${i + 1}</td>
+          <td>${i + 1}</td>
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
-          <td > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.qty}</td>
+          <td>${item.qty}</td>
         </tr>''';
     }
 
     htmlContent += '''
           </table>
-          <span>
-            Total Products: $totalProducts <br/>
-            Total Quantity: $totalQuantity
-             </span>
+          <p>Total Products: $totalProducts</p>
+          <p>Total Quantity: $totalQuantity</p>
         </body>
       </html>''';
 
