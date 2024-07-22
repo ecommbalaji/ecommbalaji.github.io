@@ -263,7 +263,7 @@ class ReceiptPage extends StatelessWidget {
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
-          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.qty}</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.qty}</td>
         </tr>''';
     }
 
