@@ -160,7 +160,7 @@ class ReceiptPage extends StatelessWidget {
                             Text(entry.value.subCategory ?? '', style: TextStyle(fontSize: 16)),
                           ),
                           DataCell(
-                            Text('${entry.value.qty}', style: TextStyle(fontSize: 16)),
+                            Text('${entry.value.qty}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
                           ),
                         ],
                       ),
@@ -229,25 +229,23 @@ class ReceiptPage extends StatelessWidget {
     String htmlContent = '''
       <!DOCTYPE html>
       <html>
-        <head>
-          <style>
-            body { font-family: sans-serif; }
-            table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid black; padding: 8px; text-align: left; }
-            th { background-color: #f2f2f2; }
-            .center { text-align: center; }
-            .bold { font-weight: bold; }
-            .large { font-size: 20px; }
-          </style>
-        </head>
-        <body>
-          <h1 class="center bold">Order Request Receipt</h1>
-          <p class="bold large">Order Number: $orderNumber</p>
-          <p>Date: $formattedDate</p>
-          <p><strong>Customer Details:</strong></p>
-          <p>Name or Branch Name: $nameOrBranch</p>
-          <p>Mobile Number: $mobile</p>
-          <p>Email Address: $email</p>
+        <body style="width:100%">
+         <h1>Order Request Receipt</h1>
+          <table>
+          <tr>
+         <td>
+           Order Number: $orderNumber 
+           Date: $formattedDate 
+          </td>
+          <td>
+          Customer Details:
+          Name or Branch Name: $nameOrBranch 
+          Mobile Number: $mobile 
+          Email Address: $email 
+          </td>
+          </tr>
+          </table>
+          
           <table>
             <tr>
               <th>Sr No</th>
@@ -255,7 +253,7 @@ class ReceiptPage extends StatelessWidget {
               <th>Category</th>
               <th>Subcategory</th>
               <th>Quantity</th>
-            </tr>''';
+            </tr> ''';
 
     for (var i = 0; i < orderItems.length; i++) {
       final item = orderItems[i];
@@ -265,14 +263,14 @@ class ReceiptPage extends StatelessWidget {
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
-          <td>${item.qty}</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.qty}</td>
         </tr>''';
     }
 
     htmlContent += '''
           </table>
-          <p>Total Products: $totalProducts</p>
-          <p>Total Quantity: $totalQuantity</p>
+          Total Products: $totalProducts
+          Total Quantity: $totalQuantity
         </body>
       </html>''';
 
