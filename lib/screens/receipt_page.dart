@@ -103,8 +103,8 @@ class ReceiptPage extends StatelessWidget {
               ],
             ),
             // Scrollable table
-            Expanded(
-              child: Center(
+
+              Center(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: DataTable(
@@ -169,7 +169,7 @@ class ReceiptPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+
             SizedBox(height: 20),
             // Footer with total products and total quantity
             Align(
@@ -231,7 +231,7 @@ class ReceiptPage extends StatelessWidget {
       <html>
         <head>
           <style>
-            body { font-family: sans-serif; background-color: lightblue; }
+            body { font-family: sans-serif; }
             table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid black; padding: 8px; text-align: left; }
             th { background-color: #f2f2f2; }
