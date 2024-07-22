@@ -24,7 +24,7 @@ class OrderSummaryPage extends StatelessWidget {
                   itemCount: orderItems.length,
                   itemBuilder: (context, index) {
                     final item = orderItems[index];
-                    return OrderItemWidget(
+                    return OrderSummaryWidget(
                       orderItem: item,
                       onRemove: () {
                         context.read<CartCubit>().removeFromCart(item.qty);

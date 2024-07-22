@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../vo/order_item.dart';
 
-class OrderItemWidget extends StatelessWidget {
+class OrderSummaryWidget extends StatelessWidget {
   final OrderItem orderItem;
   final VoidCallback onRemove;
   final ValueChanged<int?>? onQuantityChanged; // Nullable ValueChanged<int?>
 
-  const OrderItemWidget({
+  const OrderSummaryWidget({
     required this.orderItem,
     required this.onRemove,
     this.onQuantityChanged, // Nullable ValueChanged<int?>
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class OrderItemWidget extends StatelessWidget {
                     DropdownButton<int>(
                       value: orderItem.qty,
                       onChanged: onQuantityChanged,
-                      items: List.generate(1000, (i) => i)
+                      items: List.generate(1000, (i) => i + 1)
                           .map((value) => DropdownMenuItem<int>(
                         value: value,
                         child: Text(value.toString()),
