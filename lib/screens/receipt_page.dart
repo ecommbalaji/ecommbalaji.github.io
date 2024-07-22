@@ -53,103 +53,120 @@ class ReceiptPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Order Number: $orderNumber',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              'Date: $formattedDate',
-              style: TextStyle(color: Colors.black, fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Customer Details:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 20,
-              ),
-            ),
-            Text(
-              'Name or Branch Name: $nameOrBranch',
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            Text(
-              'Mobile Number: $mobile',
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            Text(
-              'Email Address: $email',
-              style: TextStyle(color: Colors.black, fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            // Scrollable table
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: DataTable(
-                  columnSpacing: 20,
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'Sr No',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            // Aligning order number and customer details horizontally to the right
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Order Number: $orderNumber',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20,
                       ),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Product Name',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Category',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Subcategory',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Quantity',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
+                    Text(
+                      'Date: $formattedDate',
+                      style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ],
-                  rows: orderItems
-                      .asMap()
-                      .entries
-                      .map(
-                        (entry) => DataRow(
-                      cells: [
-                        DataCell(
-                          Text('${entry.key + 1}', style: TextStyle(fontSize: 16)),
-                        ),
-                        DataCell(
-                          Text(entry.value.productName, style: TextStyle(fontSize: 16)),
-                        ),
-                        DataCell(
-                          Text(entry.value.category ?? '', style: TextStyle(fontSize: 16)),
-                        ),
-                        DataCell(
-                          Text(entry.value.subCategory ?? '', style: TextStyle(fontSize: 16)),
-                        ),
-                        DataCell(
-                          Text('${entry.value.qty}', style: TextStyle(fontSize: 16)),
-                        ),
-                      ],
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Customer Details:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
                     ),
-                  )
-                      .toList(),
+                    Text(
+                      'Name or Branch Name: $nameOrBranch',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    Text(
+                      'Mobile Number: $mobile',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    Text(
+                      'Email Address: $email',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            // Scrollable table
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                    columnSpacing: 20,
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          'Sr No',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Product Name',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Category',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Subcategory',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Quantity',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                    rows: orderItems
+                        .asMap()
+                        .entries
+                        .map(
+                          (entry) => DataRow(
+                        cells: [
+                          DataCell(
+                            Text('${entry.key + 1}', style: TextStyle(fontSize: 16)),
+                          ),
+                          DataCell(
+                            Text(entry.value.productName, style: TextStyle(fontSize: 16)),
+                          ),
+                          DataCell(
+                            Text(entry.value.category ?? '', style: TextStyle(fontSize: 16)),
+                          ),
+                          DataCell(
+                            Text(entry.value.subCategory ?? '', style: TextStyle(fontSize: 16)),
+                          ),
+                          DataCell(
+                            Text('${entry.value.qty}', style: TextStyle(fontSize: 16)),
+                          ),
+                        ],
+                      ),
+                    )
+                        .toList(),
+                  ),
                 ),
               ),
             ),

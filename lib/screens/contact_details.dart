@@ -78,8 +78,8 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your mobile number';
                           }
-                          if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                            return 'Please enter a valid 10-digit mobile number';
+                          if (!RegExp(r'^\+?[0-9]{10,}$').hasMatch(value)) {
+                            return 'Please enter a valid mobile number (no spaces)';
                           }
                           return null;
                         },
