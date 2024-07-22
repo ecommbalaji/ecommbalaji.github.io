@@ -234,15 +234,17 @@ class ReceiptPage extends StatelessWidget {
           <table>
           <tr>
          <td>
+         <p>
            Order Number: $orderNumber 
            Date: $formattedDate 
+           <br>
+           Customer Details:
+           Name or Branch Name: $nameOrBranch 
+           Mobile Number: $mobile 
+           Email Address: $email 
+           </p>
           </td>
-          <td>
-          Customer Details:
-          Name or Branch Name: $nameOrBranch 
-          Mobile Number: $mobile 
-          Email Address: $email 
-          </td>
+         
           </tr>
           </table>
           
