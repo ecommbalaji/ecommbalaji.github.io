@@ -20,7 +20,7 @@ class _ProductTableQtySelectorState extends State<ProductTableQtySelector> {
       child: DropdownButton2<int>(
         isExpanded: false,
         isDense: true,
-        items: List.generate(1000, (index) => index)
+        items: List.generate(1001, (index) => index)
             .map((value) => DropdownMenuItem<int>(
           child: Text('$value'),
           value: value,
