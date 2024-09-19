@@ -24,7 +24,7 @@ class _DataRowWidgetState extends State<DataRowWidget> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _buildDataCell('${widget.index}', 0.1, TextAlign.center),
+        _buildDataCell('${widget.index + 1}', 0.1, TextAlign.center),
         _buildDataCell(widget.item.itemId, 0.15, TextAlign.center),
         _buildDataCell(widget.item.productName, 0.2, TextAlign.left),
         _buildDataCell(widget.item.category ?? '', 0.15, TextAlign.center),
