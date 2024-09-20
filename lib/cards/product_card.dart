@@ -16,8 +16,10 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClientMixin {
+
   @override
   Widget build(BuildContext context) {
+    String orderItmName = widget.orderItem.productName.trim().replaceAll("\n", '');
     return Material(
       color: Colors.white,
       elevation: 0,
@@ -28,7 +30,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top: 8.0, left:8.0, right:8.0, bottom: 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,24 +39,25 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               const SizedBox(height: 10.0),
               // Item ID
               Text(
-                'Item ID: ${widget.orderItem.itemId}',
+                'Item ID: ${widget.orderItem.itemId.trim()}',
                 style: TextStyle(
                   fontSize: 14.0,
                 ),
               ),
               const SizedBox(height: 5.0),
               // Product Name
-              Tooltip(
-                message: widget.orderItem.productName,
+           Tooltip(
+                message: orderItmName,
                 child: Text(
-                  widget.orderItem.productName,
+                  orderItmName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
                   ),
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+
               ),
               const SizedBox(height: 5.0),
               // Product Category
@@ -84,11 +87,12 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     });
                   }),
                 ],
-              ),
+              )
             ],
           ),
+        )
         ),
-      ),
+
     );
   }
 

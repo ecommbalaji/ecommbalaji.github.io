@@ -125,11 +125,12 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                 physics: BouncingScrollPhysics(), // Smooth scroll
                 children: [
                   GridView.builder(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 450,
+                      mainAxisExtent: 380,
+                      childAspectRatio: 1,
                       mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: 0.8,
+                      crossAxisSpacing: 10.0
                     ),
                     itemCount: filteredItems.length,
                     itemBuilder: (context, index) {
