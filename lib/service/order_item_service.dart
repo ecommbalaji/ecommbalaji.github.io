@@ -34,7 +34,9 @@ class OrderItemService {
         qty:  0,
         category: row[2]?.value?.toString(),
         subCategory: row[3]?.value?.toString(),
-        imageUrl: row[4]?.value?.toString(),
+        price: row[4]?.value?.toString(),
+        remarks: row[5]?.value?.toString(),
+        imageUrl: row[6]?.value?.toString()
       );
       orderItems.add(orderItem);
     }

@@ -76,6 +76,20 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                 ),
               ),
               const SizedBox(height: 5.0),
+              Text(
+                'Price: ${widget.orderItem.price ?? ''}',
+                style: TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Text(
+                'Remarks: ${widget.orderItem.remarks ?? ''}',
+                style: TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+              const SizedBox(height: 5.0),
               // Add to Cart Button
               Row(
                 children: [

@@ -33,6 +33,8 @@ class ProductTable extends StatelessWidget {
               _buildHeaderCell('Product Name', 0.2, TextAlign.center), // Width as a fraction of available space
               _buildHeaderCell('Category', 0.15, TextAlign.center), // Width as a fraction of available space
               _buildHeaderCell('SubCategory', 0.15, TextAlign.center), // Width as a fraction of available space
+              _buildHeaderCell('Price', 0.15, TextAlign.center),
+              _buildHeaderCell('Remarks', 0.15, TextAlign.center),
               _buildHeaderCell('Quantity', 0.1, TextAlign.center), // Width as a fraction of available space
               _buildHeaderCell('Add to Cart', 0.15, TextAlign.center), // Width as a fraction of available space
             ],
