@@ -14,8 +14,8 @@ class OrderItem {
     required this.qty,
     this.category,
     this.subCategory,
-    String? price,
-    String? remarks,
+    this.price,
+    this.remarks,
     this.imageUrl
   });
 
