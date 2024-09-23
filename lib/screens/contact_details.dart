@@ -16,7 +16,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
   final TextEditingController _nameBranchController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-
+  final TextEditingController _addressController = TextEditingController();
   void _navigateToOrderReceipt(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final orderItems = context.read<OrderCubit>().state;
@@ -29,6 +29,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
             nameOrBranch: _nameBranchController.text,
             mobile: _mobileController.text,
             email: _emailController.text,
+            address: _addressController.text,
           ),
         ),
       );
@@ -69,7 +70,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                       SizedBox(height: 16.0),
                       TextFormField(
                         controller: _mobileController,
-                        decoration: InputDecoration(
+                         decoration: InputDecoration(
                           labelText: 'Mobile Number',
                           border: OutlineInputBorder(),
                         ),
@@ -88,7 +89,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                       TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'Email Address',
+                          labelText: 'Email',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.emailAddress,
@@ -98,6 +99,16 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                           }
                           return null;
                         },
+                      ),
+                      SizedBox(height: 16.0),
+                      TextFormField(
+                        maxLines: 5,
+                        controller: _addressController,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.streetAddress,
                       ),
                       SizedBox(height: 16.0),
                       ElevatedButton(

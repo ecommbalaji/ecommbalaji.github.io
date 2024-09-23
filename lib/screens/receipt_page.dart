@@ -14,6 +14,7 @@ class ReceiptPage extends StatelessWidget {
   final String nameOrBranch;
   final String mobile;
   final String email;
+  final String address;
 
   ReceiptPage({
     required this.orderItems,
@@ -21,6 +22,7 @@ class ReceiptPage extends StatelessWidget {
     required this.nameOrBranch,
     required this.mobile,
     required this.email,
+    required this.address
   });
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ReceiptPage extends StatelessWidget {
     // Calculate total products and total quantity
     final totalProducts = orderItems.length;
     final totalQuantity = orderItems.fold(0, (sum, item) => sum + item.qty);
-
+    final splitAddress = address.split(",").join(",\n");
     double totalSum = 0;
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +46,9 @@ class ReceiptPage extends StatelessWidget {
         )
 
       ),
-      body: Container(
+      body:
+      SingleChildScrollView(
+      child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -92,10 +96,18 @@ class ReceiptPage extends StatelessWidget {
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     Text(
-                      'Email Address: $email',
+                      'Email : $email',
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
+
+                       Text(
+                        'Address: $splitAddress',
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+
+
                   ],
+
                 ),
               ],
             ),
@@ -242,7 +254,8 @@ class ReceiptPage extends StatelessWidget {
 
           ],
         ),
-      ),
+      )
+    ),
 
     );
   }
@@ -300,7 +313,8 @@ class ReceiptPage extends StatelessWidget {
            Customer Details:
            Name or Branch Name: $nameOrBranch 
            Mobile Number: $mobile 
-           Email Address: $email 
+           Email : $email 
+           Address : $address 
            </p>
           </td>
          
