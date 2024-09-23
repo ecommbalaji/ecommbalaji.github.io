@@ -117,6 +117,12 @@ class ReceiptPage extends StatelessWidget {
             ),
             DataColumn(
               label: Text(
+                'Item Id',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
                 'Product Name',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
@@ -139,12 +145,7 @@ class ReceiptPage extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
-            DataColumn(
-              label: Text(
-                'Remarks',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
+
             DataColumn(
               label: Text(
                 'Quantity',
@@ -170,11 +171,11 @@ class ReceiptPage extends StatelessWidget {
                 color: entry.key % 2 == 0 ? MaterialStateProperty.all(Colors.grey[100]) : MaterialStateProperty.all(Colors.white),
                 cells: [
                   DataCell(Text('${entry.key + 1}', style: TextStyle(fontSize: 16))),
+                  DataCell(Text(item.itemId ?? '', style: TextStyle(fontSize: 16))),
                   DataCell(Text(item.productName, style: TextStyle(fontSize: 16))),
                   DataCell(Text(item.category ?? '', style: TextStyle(fontSize: 16))),
                   DataCell(Text(item.subCategory ?? '', style: TextStyle(fontSize: 16))),
                   DataCell(Text('\₹${item.price}', style: TextStyle(fontSize: 16))),
-                  DataCell(Text(item.remarks ?? '', style: TextStyle(fontSize: 16))),
                   DataCell(Text('${item.qty}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
                   DataCell(Text('\₹${total}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
                 ],
@@ -309,11 +310,11 @@ class ReceiptPage extends StatelessWidget {
           <table>
             <tr>
               <th>Sr No</th>
+              <th>Item Id</th>
               <th>Product Name</th>
               <th>Category</th>
               <th>Subcategory</th>
               <th>Price</th>
-              <th>Specifications</th>
               <th>Quantity</th>
               <th>Total</th>
             </tr> ''';
@@ -326,11 +327,11 @@ class ReceiptPage extends StatelessWidget {
       htmlContent += '''
         <tr>
           <td>${i + 1}</td>
+          <td>${item.itemId}</td>
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
           <td>INR ${item.price ?? ''}</td>
-          <td>${item.remarks ?? ''}</td>
           <td>${item.qty}</td>
            <td>INR ${totalPrice.toStringAsFixed(2)}</td>
         </tr>''';

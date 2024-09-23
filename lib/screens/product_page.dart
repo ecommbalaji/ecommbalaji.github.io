@@ -39,7 +39,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     // Filter items based on search and filters
     final filteredItems = orderItemList.where((item) {
-      final matchesSearch = item.productName.toLowerCase().contains(_searchQuery.toLowerCase());
+      final matchesSearch = item.productName.toLowerCase().contains(_searchQuery.toLowerCase()) || item.itemId.toLowerCase().contains(_searchQuery.toLowerCase()) || item.category!.toLowerCase().contains(_searchQuery.toLowerCase()) || item.subCategory!.toLowerCase().contains(_searchQuery.toLowerCase()) ;
       final matchesCategory = _selectedCategory.isEmpty || item.category == _selectedCategory;
       final matchesSubCategory = _selectedSubCategory.isEmpty || item.subCategory == _selectedSubCategory;
       return matchesSearch && matchesCategory && matchesSubCategory;
@@ -74,7 +74,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
               });
             },
             decoration: InputDecoration(
-              hintText: 'Search Products',
+              hintText: 'Search By Products/Item Id/Category/Subcategory',
               border: InputBorder.none,
               prefixIcon: Icon(Icons.search, color: Colors.grey),
             ),
