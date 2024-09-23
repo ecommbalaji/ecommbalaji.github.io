@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:htmltopdfwidgets/htmltopdfwidgets.dart' as html2pdf;
 import 'package:intl/intl.dart';
+import 'package:webcatalog/screens/success_page.dart';
 import 'dart:html' as html;
 import '../vo/order_item.dart';
+import 'package:http/http.dart' as http;
 
 class ReceiptPage extends StatelessWidget {
   final List<OrderItem> orderItems;
@@ -18,7 +22,6 @@ class ReceiptPage extends StatelessWidget {
     required this.mobile,
     required this.email,
   });
-
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -27,6 +30,7 @@ class ReceiptPage extends StatelessWidget {
     // Calculate total products and total quantity
     final totalProducts = orderItems.length;
     final totalQuantity = orderItems.fold(0, (sum, item) => sum + item.qty);
+
     double totalSum = 0;
     return Scaffold(
       appBar: AppBar(
@@ -37,15 +41,8 @@ class ReceiptPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.download),
-            onPressed: () async {
-              await convertHtmlToPdf();
-            },
-          ),
-        ],
+        )
+
       ),
       body: Container(
         width: double.infinity,
@@ -216,14 +213,39 @@ class ReceiptPage extends StatelessWidget {
                     'Total Quantity: $totalQuantity',
                     style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
                   ),
+
                 ],
               ),
             ),
+            SizedBox(height: 20),
+            // Centered Submit Button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Center the buttons horizontally
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await invokeSnsApi("Order Placed ", context, orderNumber);
+                  },
+                  child: Text('Submit'),
+                ),
+                SizedBox(width: 20), // Add some spacing between the buttons
+                ElevatedButton(
+                  onPressed: () async {
+                    await convertHtmlToPdf();
+                  },
+                  child: Text('Download Receipt'),
+                ),
+              ],
+            ),
+
+
           ],
         ),
       ),
+
     );
   }
+
 
   Future<void> convertHtmlToPdf() async {
     final newpdf = html2pdf.Document();
@@ -256,7 +278,12 @@ class ReceiptPage extends StatelessWidget {
     // Calculate total products and total quantity
     final totalProducts = orderItems.length;
     final totalQuantity = orderItems.fold(0, (sum, item) => sum + item.qty);
-
+    final totalCost = orderItems.fold(0.0, (sum, item) {
+      int qty = item.qty;
+      double price = double.tryParse(item.price ?? '') ?? 0.0;
+      double itemTotal = qty * price;
+      return sum + itemTotal;
+    }).toStringAsFixed(2);
     String htmlContent = '''
       <!DOCTYPE html>
       <html>
@@ -286,21 +313,26 @@ class ReceiptPage extends StatelessWidget {
               <th>Category</th>
               <th>Subcategory</th>
               <th>Price</th>
-              <th>Remarks</th>
+              <th>Specifications</th>
               <th>Quantity</th>
+              <th>Total</th>
             </tr> ''';
 
     for (var i = 0; i < orderItems.length; i++) {
       final item = orderItems[i];
+      int qty = item.qty;
+      double price = double.parse(item.price!);
+      double totalPrice = qty * price;
       htmlContent += '''
         <tr>
           <td>${i + 1}</td>
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
-          <td>${item.price ?? ''}</td>
+          <td>INR ${item.price ?? ''}</td>
           <td>${item.remarks ?? ''}</td>
           <td>${item.qty}</td>
+           <td>INR ${totalPrice.toStringAsFixed(2)}</td>
         </tr>''';
     }
 
@@ -308,9 +340,41 @@ class ReceiptPage extends StatelessWidget {
           </table>
           Total Products: $totalProducts
           Total Quantity: $totalQuantity
+          Total Cost: INR $totalCost
         </body>
       </html>''';
 
     return htmlContent;
   }
+
+  Future<void> invokeSnsApi(String message, BuildContext context, String ordernum) async {
+    final url = 'https://c1qdce11y0.execute-api.ap-south-1.amazonaws.com/prod/postEmails';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: json.encode({'message': message + '' + ordernum, 'ordernum': ordernum}),
+      );
+
+      if (response.statusCode == 200) {
+        // Use pushReplacement for success navigation (avoids back button)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SuccessPage(ordernum: ordernum),
+          ),
+        );
+      } else {
+        print('Failed to send message: ${response.statusCode}');
+        final snackBar = SnackBar(
+          content: Text("Request Failed, Contact Support!"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 }

@@ -29,7 +29,7 @@ class _DataRowWidgetState extends State<DataRowWidget> {
         _buildDataCell(widget.item.productName, 0.2, TextAlign.left),
         _buildDataCell(widget.item.category ?? '', 0.15, TextAlign.center),
         _buildDataCell(widget.item.subCategory ?? '', 0.15, TextAlign.center),
-        _buildDataCell(widget.item.price ?? '', 0.15, TextAlign.center),
+        _buildDataCell('₹${widget.item.price ?? ''}', 0.15, TextAlign.center),
         _buildDataCell(widget.item.remarks ?? '', 0.15, TextAlign.center),
         Expanded(
           flex: (0.10 * 100).toInt(),

@@ -77,7 +77,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               ),
               const SizedBox(height: 5.0),
               Text(
-                'Price: ${widget.orderItem.price ?? ''}',
+                'Price: ₹${widget.orderItem.price ?? ''}',
                 style: TextStyle(
                   fontSize: 14.0,
                 ),
