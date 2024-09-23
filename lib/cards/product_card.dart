@@ -84,7 +84,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               ),
               const SizedBox(height: 5.0),
               Text(
-                'Remarks: ${widget.orderItem.remarks ?? ''}',
+                'Specifications: ${widget.orderItem.remarks ?? ''}',
                 style: TextStyle(
                   fontSize: 14.0,
                 ),
