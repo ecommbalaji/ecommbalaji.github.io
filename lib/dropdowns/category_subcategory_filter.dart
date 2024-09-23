@@ -26,16 +26,16 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
   void initState() {
     super.initState();
     if (widget.orderItems.isNotEmpty) {
-      selectedCategory = 'Select';
-      selectedSubCategory = 'Select';
+      selectedCategory = 'All';
+      selectedSubCategory = 'All';
     }
   }
 
   Map<String, List<String>> getCategorySubCategoryMap() {
-    Map<String, List<String>> categorySubCategoryMap = {'Select': ['Select']};
+    Map<String, List<String>> categorySubCategoryMap = {'All': ['All']};
     for (var item in widget.orderItems) {
       if (!categorySubCategoryMap.containsKey(item.category)) {
-        categorySubCategoryMap[item.category!] = ['Select'];
+        categorySubCategoryMap[item.category!] = ['All'];
       }
       if (!categorySubCategoryMap[item.category]!.contains(item.subCategory)) {
         categorySubCategoryMap[item.category]!.add(item.subCategory!);
@@ -62,7 +62,7 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
           onChanged: (newValue) {
             setState(() {
               selectedCategory = newValue;
-              selectedSubCategory = 'Select';
+              selectedSubCategory = 'All';
               widget.onCategoryChanged(newValue);
             });
           },
@@ -78,7 +78,7 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
           value: selectedSubCategory,
           items: selectedCategory != null
               ? categorySubCategoryMap[selectedCategory]!
-              : ['Select'],
+              : ['All'],
           onChanged: (newValue) {
             setState(() {
               selectedSubCategory = newValue;

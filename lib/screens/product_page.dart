@@ -87,12 +87,12 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
               orderItems: orderItemList,
               onCategoryChanged: (String? value) {
                 setState(() {
-                  _selectedCategory = value == 'Select' ? '' : value!;
+                  _selectedCategory = value == 'All' ? '' : value!;
                 });
               },
               onSubCategoryChanged: (String? value) {
                 setState(() {
-                  _selectedSubCategory = value == 'Select' ? '' : value!;
+                  _selectedSubCategory = value == 'All' ? '' : value!;
                 });
               },
             ),
