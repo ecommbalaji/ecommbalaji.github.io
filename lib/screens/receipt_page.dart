@@ -27,7 +27,7 @@ class ReceiptPage extends StatelessWidget {
     // Calculate total products and total quantity
     final totalProducts = orderItems.length;
     final totalQuantity = orderItems.fold(0, (sum, item) => sum + item.qty);
-
+    double totalSum = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -104,71 +104,102 @@ class ReceiptPage extends StatelessWidget {
             ),
             // Scrollable table
 
-              Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                    columnSpacing: 20,
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'Sr No',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Product Name',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Category',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Subcategory',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Quantity',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                    rows: orderItems
-                        .asMap()
-                        .entries
-                        .map(
-                          (entry) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text('${entry.key + 1}', style: TextStyle(fontSize: 16)),
-                          ),
-                          DataCell(
-                            Text(entry.value.productName, style: TextStyle(fontSize: 16)),
-                          ),
-                          DataCell(
-                            Text(entry.value.category ?? '', style: TextStyle(fontSize: 16)),
-                          ),
-                          DataCell(
-                            Text(entry.value.subCategory ?? '', style: TextStyle(fontSize: 16)),
-                          ),
-                          DataCell(
-                            Text('${entry.value.qty}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
-                          ),
-                        ],
-                      ),
-                    )
-                        .toList(),
-                  ),
-                ),
+
+
+       Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: DataTable(
+          columnSpacing: 20,
+          columns: [
+            DataColumn(
+              label: Text(
+                'Sr No',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
+            ),
+            DataColumn(
+              label: Text(
+                'Product Name',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Category',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Subcategory',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Price (per Unit)',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Remarks',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Quantity',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Total',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+          ],
+          rows: orderItems
+              .asMap()
+              .entries
+              .map(
+                (entry) {
+              final item = entry.value;
+              final total = double.parse(item.price!) * item.qty;
+              totalSum += total;
+              return DataRow(
+                color: entry.key % 2 == 0 ? MaterialStateProperty.all(Colors.grey[100]) : MaterialStateProperty.all(Colors.white),
+                cells: [
+                  DataCell(Text('${entry.key + 1}', style: TextStyle(fontSize: 16))),
+                  DataCell(Text(item.productName, style: TextStyle(fontSize: 16))),
+                  DataCell(Text(item.category ?? '', style: TextStyle(fontSize: 16))),
+                  DataCell(Text(item.subCategory ?? '', style: TextStyle(fontSize: 16))),
+                  DataCell(Text('\₹${item.price}', style: TextStyle(fontSize: 16))),
+                  DataCell(Text(item.remarks ?? '', style: TextStyle(fontSize: 16))),
+                  DataCell(Text('${item.qty}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
+                  DataCell(Text('\₹${total}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
+                ],
+              );
+            },
+          )
+              .toList()
+            ..add(DataRow(
+              cells: [
+                DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                DataCell(Text('')),
+                DataCell(Text('')),
+                DataCell(Text('')),
+                DataCell(Text('')),
+                DataCell(Text('')),
+                DataCell(Text('')),
+                DataCell(Text('\₹${totalSum.toStringAsFixed(2)}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+              ],
+            )),
+        ),
+      ),
+    ),
 
             SizedBox(height: 20),
             // Footer with total products and total quantity
@@ -254,6 +285,8 @@ class ReceiptPage extends StatelessWidget {
               <th>Product Name</th>
               <th>Category</th>
               <th>Subcategory</th>
+              <th>Price</th>
+              <th>Remarks</th>
               <th>Quantity</th>
             </tr> ''';
 
@@ -265,6 +298,8 @@ class ReceiptPage extends StatelessWidget {
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
+          <td>${item.price ?? ''}</td>
+          <td>${item.remarks ?? ''}</td>
           <td>${item.qty}</td>
         </tr>''';
     }
