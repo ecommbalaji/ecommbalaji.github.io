@@ -42,7 +42,8 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
       final matchesSearch = item.productName.toLowerCase().contains(_searchQuery.toLowerCase()) || item.itemId.toLowerCase().contains(_searchQuery.toLowerCase()) || item.category!.toLowerCase().contains(_searchQuery.toLowerCase()) || item.subCategory!.toLowerCase().contains(_searchQuery.toLowerCase()) ;
       final matchesCategory = _selectedCategory.isEmpty || item.category == _selectedCategory;
       final matchesSubCategory = _selectedSubCategory.isEmpty || item.subCategory == _selectedSubCategory;
-      return matchesSearch && matchesCategory && matchesSubCategory;
+      final matchesBoth =  _selectedCategory.isEmpty;
+      return matchesSearch && matchesCategory && matchesSubCategory || matchesBoth;
     }).toList();
 
     return Scaffold(
