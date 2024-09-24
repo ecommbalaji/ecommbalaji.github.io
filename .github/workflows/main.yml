@@ -23,7 +23,7 @@ jobs:
         uses: SpicyPizza/create-envfile@v2.0
         with:
           envkey_SERVER_EXCEL_URL: ${{ secrets.SERVER_EXCEL_URL }}
-          envkey_$API_GATEWAY_URL: ${{ secrets.$API_GATEWAY_URL }}
+          envkey_$API_GATEWAY_URL: ${{ secrets.API_GATEWAY_URL }}
           file_name: .env
           directory: .
           fail_on_empty: false
