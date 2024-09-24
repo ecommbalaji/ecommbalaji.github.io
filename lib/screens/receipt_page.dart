@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:htmltopdfwidgets/htmltopdfwidgets.dart' as html2pdf;
 import 'package:intl/intl.dart';
 import 'package:webcatalog/screens/success_page.dart';
 import 'dart:html' as html;
 import '../vo/order_item.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class ReceiptPage extends StatelessWidget {
   final List<OrderItem> orderItems;
@@ -24,6 +26,8 @@ class ReceiptPage extends StatelessWidget {
     required this.email,
     required this.address
   });
+
+  final logger = Logger();
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -237,21 +241,16 @@ class ReceiptPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    await invokeSnsApi("Order Placed ", context, orderNumber);
+                    await  getPresignedUrl(orderNumber+".pdf").then((presignedurl) async {
+                      await convertHtmlToPdf(presignedurl).then((_){
+                        invokeSnsApi(context, orderNumber,  presignedurl.split('?').first);
+                      });
+                    });
                   },
                   child: Text('Submit'),
-                ),
-                SizedBox(width: 20), // Add some spacing between the buttons
-                ElevatedButton(
-                  onPressed: () async {
-                    await convertHtmlToPdf();
-                  },
-                  child: Text('Download Receipt'),
-                ),
+                )
               ],
             ),
-
-
           ],
         ),
       )
@@ -261,10 +260,9 @@ class ReceiptPage extends StatelessWidget {
   }
 
 
-  Future<void> convertHtmlToPdf() async {
+  Future<void> convertHtmlToPdf(String presignedUrl) async {
     final newpdf = html2pdf.Document();
     var htmlStr = generateHtml();
-
     final widgets = await html2pdf.HTMLToPdf().convert(htmlStr);
     newpdf.addPage(html2pdf.MultiPage(
       maxPages: 200,
@@ -274,6 +272,21 @@ class ReceiptPage extends StatelessWidget {
     ));
     final bytes = await newpdf.save();
     final blob = html.Blob([bytes], 'application/pdf');
+
+    final reader = html.FileReader();
+
+    reader.readAsArrayBuffer(blob);
+
+    reader.onLoadEnd.listen((e) async {
+      try {
+        // Upload to S3
+        await uploadToS3(presignedUrl, reader.result as List<int>);
+        logger.d('PDF sucessfully uploaded to S3 for order number: ${orderNumber}');
+      }
+      catch (e) {
+        logger.e('Error during upload to S3 for order number: ${orderNumber}, error: $e');
+      }
+    });
     final url = html.Url.createObjectUrlFromBlob(blob);
     final anchor = html.document.createElement('a') as html.AnchorElement
       ..href = url
@@ -283,6 +296,44 @@ class ReceiptPage extends StatelessWidget {
     anchor.click();
     html.document.body?.children.remove(anchor);
     html.Url.revokeObjectUrl(url);
+
+  }
+
+  Future<String> getPresignedUrl(String fileName) async {
+    var apiGatewayUrl =  dotenv.env["API_GATEWAY_URL"]; // Replace with your actual URL
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiGatewayUrl!),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'file_name': fileName}),
+      );
+
+      if (response.statusCode == 200) {
+        final presignedUrl = jsonDecode(response.body)['presignedUrl'];
+        logger.d('Received presigned URL: $presignedUrl');
+        return presignedUrl;
+      } else {
+        throw Exception('Failed to get presigned URL');
+      }
+    } catch (e) {
+      logger.e('Error fetching presigned URL for file: $fileName, error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> uploadToS3(String presignedUrl, List<int> fileBytes) async {
+    logger.d('Uploading to S3 with URL: $presignedUrl');
+    try {
+      await http.put(
+        Uri.parse(presignedUrl),
+        body: fileBytes,
+      );
+      logger.d('Upload to S3 completed');
+    } catch (e) {
+      logger.e('Error uploading to S3: $e');
+      rethrow;
+    }
   }
 
   String generateHtml() {
@@ -362,14 +413,14 @@ class ReceiptPage extends StatelessWidget {
     return htmlContent;
   }
 
-  Future<void> invokeSnsApi(String message, BuildContext context, String ordernum) async {
+  Future<void> invokeSnsApi( BuildContext context, String ordernum, String receiptUrl) async {
     final url = 'https://c1qdce11y0.execute-api.ap-south-1.amazonaws.com/prod/postEmails';
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        body: json.encode({'message': message + '' + ordernum, 'ordernum': ordernum}),
+        body: json.encode({'message': "Order placed with order number ${ordernum}. You can download the order request receipt by visiting ${receiptUrl}", 'ordernum': ordernum}),
       );
 
       if (response.statusCode == 200) {
