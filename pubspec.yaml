@@ -45,6 +45,7 @@ dependencies:
   flutter_excel: ^1.0.1
   htmltopdfwidgets: ^0.0.9+1
   logger: ^2.3.0
+  flutter_image_slideshow: ^0.1.6
 
 dev_dependencies:
   flutter_test:

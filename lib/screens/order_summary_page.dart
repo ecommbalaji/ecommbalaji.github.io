@@ -16,7 +16,8 @@ class OrderSummaryPage extends StatelessWidget {
       appBar: AppBar(title: Text('Order Summary')),
       body: Column(
         children: [
-          Expanded(
+          Flexible(
+            flex: 2,
             child: BlocBuilder<OrderCubit, List<OrderItem>>(
               builder: (context, orderItems) {
                 final orderItems = context.read<OrderCubit>().state;
@@ -40,9 +41,15 @@ class OrderSummaryPage extends StatelessWidget {
               },
             ),
           ),
-          Padding(
+      Flexible(
+        flex: 1,
+         child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -53,7 +60,8 @@ class OrderSummaryPage extends StatelessWidget {
               },
               child: Text('Contact Details'),
             ),
-          ),
+          )
+      ),
         ],
       ),
     );

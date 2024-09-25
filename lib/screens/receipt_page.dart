@@ -240,6 +240,10 @@ class ReceiptPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center, // Center the buttons horizontally
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white
+                  ),
                   onPressed: () async {
                     await  getPresignedUrl(orderNumber+".pdf").then((presignedurl) async {
                       await convertHtmlToPdf(presignedurl).then((_){

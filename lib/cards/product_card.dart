@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:webcatalog/dropdowns/grid_qty_selector.dart';
+import 'package:webcatalog/popup/specification_popup.dart';
 import 'package:webcatalog/vo/order_item.dart';
 
 import '../button/add_to_cart_button_grid.dart';
+import '../carousal/image_carousal.dart';
 import '../dropdowns/product_table_qty_selector.dart';
 import '../image/cached_image.dart';
 
@@ -36,6 +38,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             children: [
               const SizedBox(height: 10.0),
               ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
+             // ImageCarousal(images: [ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!)]),
               const SizedBox(height: 10.0),
               // Item ID
               Text(
@@ -83,11 +86,8 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                 ),
               ),
               const SizedBox(height: 5.0),
-              Text(
-                'Specifications: ${widget.orderItem.remarks ?? ''}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
+              Flexible(
+              child: SpecificationPopup(specs: 'Specifications: ${widget.orderItem.remarks ?? ''}')
               ),
               const SizedBox(height: 5.0),
               // Add to Cart Button

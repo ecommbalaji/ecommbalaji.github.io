@@ -112,6 +112,10 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                       ),
                       SizedBox(height: 16.0),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white
+                        ),
                         onPressed: () => _navigateToOrderReceipt(context),
                         child: Text('Proceed To Checkout'),
                       ),
