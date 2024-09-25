@@ -35,7 +35,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10.0),
-              CachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
+              ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
               const SizedBox(height: 10.0),
               // Item ID
               Text(
