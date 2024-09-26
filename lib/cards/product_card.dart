@@ -22,6 +22,9 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     String orderItmName = widget.orderItem.productName.trim().replaceAll("\n", '');
+    List<ZoomableCachedImageWidget> lisTImages = [];
+    lisTImages.add(ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!));
+    lisTImages.add(ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!));
     return Material(
       color: Colors.white,
       elevation: 0,
@@ -37,8 +40,12 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10.0),
-              ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
-             // ImageCarousal(images: [ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!)]),
+             // ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
+              Container(
+                height: 200,
+                child:   ImageCarousal(images: lisTImages)
+              ),
+
               const SizedBox(height: 10.0),
               // Item ID
               Text(

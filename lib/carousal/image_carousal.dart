@@ -9,18 +9,13 @@ class ImageCarousal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Demo'),
-        ),
-        body: ImageSlideshow(
+    return  ImageSlideshow(
 
           /// Width of the [ImageSlideshow].
-          width: 20,
+        //  width: 200,
 
           /// Height of the [ImageSlideshow].
-          height: 20,
+          height: 400,
 
           /// The page to show when first creating the [ImageSlideshow].
           initialPage: 0,
@@ -38,19 +33,22 @@ class ImageCarousal extends StatelessWidget {
 
           /// Auto scroll interval.
           /// Do not auto scroll with null or 0.
-          autoPlayInterval: null,
+          autoPlayInterval: 0,
 
           /// Loops back to first slide.
           isLoop: true,
+          indicatorBottomPadding: 5,
+          indicatorPadding: 5,
+          indicatorRadius: 5,
+          disableUserScrolling: false,
 
           /// The widgets to display in the [ImageSlideshow].
           /// Add the sample image file into the images folder
           children: List.generate(
             images.length,
-                (index) => images[index],
+                (index) => Expanded(child: images[index]),
           ),
-        ),
-      ),
-    );
+        );
+
   }
 }

@@ -15,16 +15,16 @@ class ZoomableCachedImageWidget extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         placeholder: (context, url) => Container(
-          height: 200.0,
+       //   height: 200.0,
           color: Colors.grey[300], // Placeholder color or widget
         ),
         errorWidget: (context, url, error) => Container(
-          height: 200.0,
+        //  height: 200.0,
           color: Colors.grey[300], // Error placeholder color or widget
           child: Center(child: Icon(Icons.error)),
         ),
         imageBuilder: (context, imageProvider) => Container(
-          height: 200.0,
+         // height: 200.0,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: imageProvider,
