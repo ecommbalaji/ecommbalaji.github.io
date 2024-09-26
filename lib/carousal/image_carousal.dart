@@ -46,7 +46,7 @@ class ImageCarousal extends StatelessWidget {
           /// Add the sample image file into the images folder
           children: List.generate(
             images.length,
-                (index) => Expanded(child: images[index]),
+                (index) => images[index],
           ),
         );
 
