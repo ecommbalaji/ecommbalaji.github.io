@@ -26,9 +26,9 @@ class OrderSummaryWidget extends StatelessWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              image: orderItem.imageUrl != null
+              image: orderItem.images != null
                   ? DecorationImage(
-                image: NetworkImage(orderItem.imageUrl!),
+                image: NetworkImage(orderItem.images![0]),
                 fit: BoxFit.cover,
               )
                   : null,

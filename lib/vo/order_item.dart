@@ -5,7 +5,7 @@ class OrderItem {
   String? subCategory;
   String? price;
   String? remarks;
-  String? imageUrl;
+  List<String>? images;
   int qty;
 
   OrderItem({
@@ -16,7 +16,7 @@ class OrderItem {
     this.subCategory,
     this.price,
     this.remarks,
-    this.imageUrl
+    this.images
   });
 
   factory OrderItem.fromMap(Map<String, dynamic> map) {
@@ -25,7 +25,7 @@ class OrderItem {
       productName: map['productName'] ?? '',
       category: map['category'] ?? '',
       subCategory: map['subCategory'] ?? '',
-      imageUrl: map['imageUrl'] ?? '',
+      images: map['imageUrl'] ?? '',
       price: map['price'] ?? '',
       remarks: map['remarks'] ?? '',
       qty: map['qty'] ?? 0,

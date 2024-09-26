@@ -36,7 +36,7 @@ class OrderItemService {
         subCategory: row[3]?.value?.toString(),
         price: row[4]?.value?.toString(),
         remarks: row[5]?.value?.toString(),
-        imageUrl: row[6]?.value?.toString()
+        images: row[6]?.value?.toString().split(",")
       );
       orderItems.add(orderItem);
     }

@@ -23,8 +23,13 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
   Widget build(BuildContext context) {
     String orderItmName = widget.orderItem.productName.trim().replaceAll("\n", '');
     List<ZoomableCachedImageWidget> lisTImages = [];
-    lisTImages.add(ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!));
-    lisTImages.add(ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!));
+    List<String>? imagePaths = widget.orderItem.images;
+    if(imagePaths != null && imagePaths.length > 0){
+      for(var path in imagePaths)
+      {
+        lisTImages.add(ZoomableCachedImageWidget(imageUrl: path));
+      }
+    }
     return Material(
       color: Colors.white,
       elevation: 0,
