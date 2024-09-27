@@ -57,13 +57,20 @@ class _DataRowWidgetState extends State<DataRowWidget> {
       flex: (flex * 100).toInt(), // Convert fraction to flex value
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black87, // Data text color
+        constraints: BoxConstraints(maxHeight: 60), // Set a max height
+        child: Scrollbar(
+          thumbVisibility: true, // You can set this to false if you want it to show on scroll
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black87, // Data text color
+              ),
+              textAlign: align,
+            ),
           ),
-          textAlign: align,
         ),
       ),
     );
