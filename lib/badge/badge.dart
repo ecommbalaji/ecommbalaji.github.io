@@ -6,6 +6,8 @@ import '../screens/order_summary_page.dart';
 import '../statemanagement/cart_counter_cubit.dart';
 
 class ShoppingCartBadge extends StatefulWidget {
+  const ShoppingCartBadge({super.key});
+
   @override
   _ShoppingCartBadgeState createState() => _ShoppingCartBadgeState();
 }
@@ -23,24 +25,24 @@ class _ShoppingCartBadgeState extends State<ShoppingCartBadge> {
 
             badgeContent: Text(
               '$count', // Dynamically update the cart count
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
-            badgeStyle: badges.BadgeStyle(
+            badgeStyle: const badges.BadgeStyle(
               badgeColor: Colors.white,
               // Badge color
             ),
-            child: Icon(Icons.shopping_cart, color: Colors.white, size: 40,),
+            child: const Icon(Icons.shopping_cart, color: Colors.white, size: 40,),
               onTap: () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => OrderSummaryPage()),
+                  MaterialPageRoute(builder: (context) => const OrderSummaryPage()),
                 )
               } // when clicked on number
           ),
           onTap: () => {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OrderSummaryPage()), //when clicked on cart icon
+              MaterialPageRoute(builder: (context) => const OrderSummaryPage()), //when clicked on cart icon
             )
           },
         );

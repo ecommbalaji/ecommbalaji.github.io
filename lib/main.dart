@@ -7,10 +7,12 @@ import 'package:webcatalog/statemanagement/order_cubit.dart';
 
 void main() async{
   await dotenv.load(fileName: ".env");
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: ProductPage(), // Set the ProductPage as the home screen
+        home: const ProductPage(), // Set the ProductPage as the home screen
       ),
     );
   }

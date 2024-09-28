@@ -1,5 +1,4 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../vo/order_item.dart';
 
@@ -8,7 +7,7 @@ class CascadingDropdown extends StatefulWidget {
   final ValueChanged<String?> onCategoryChanged;
   final ValueChanged<String?> onSubCategoryChanged;
 
-  CascadingDropdown({
+  const CascadingDropdown({super.key, 
     required this.orderItems,
     required this.onCategoryChanged,
     required this.onSubCategoryChanged,
@@ -50,7 +49,7 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           "Category: ",
           style: TextStyle(
               color: Colors.white, fontFamily: 'Times New Roman', fontSize: 16),
@@ -67,8 +66,8 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
             });
           },
         ),
-        SizedBox(width: 12), // Adjusted space between dropdowns
-        Text(
+        const SizedBox(width: 12), // Adjusted space between dropdowns
+        const Text(
           "Sub-Category: ",
           style: TextStyle(
               color: Colors.white, fontFamily: 'Times New Roman', fontSize: 16),
@@ -97,8 +96,8 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
     required ValueChanged<String?> onChanged,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0), // Adjusted padding
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added margin
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0), // Adjusted padding
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added margin
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(6.0), // Adjusted border radius
@@ -107,19 +106,19 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
             color: Colors.grey.withOpacity(0.15), // Adjusted shadow
             spreadRadius: 1,
             blurRadius: 4,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
-          hint: Text(hint, style: TextStyle(fontSize: 14)), // Adjusted font size
+          hint: Text(hint, style: const TextStyle(fontSize: 14)), // Adjusted font size
           value: value,
           onChanged: onChanged,
           items: items.map((item) {
             return DropdownMenuItem<String>(
               value: item,
-              child: Text(item, style: TextStyle(fontSize: 14)), // Adjusted font size
+              child: Text(item, style: const TextStyle(fontSize: 14)), // Adjusted font size
             );
           }).toList(),
         ),

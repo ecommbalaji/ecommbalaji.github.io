@@ -18,7 +18,7 @@ class ReceiptPage extends StatelessWidget {
   final String email;
   final String address;
 
-  ReceiptPage({
+  ReceiptPage({super.key, 
     required this.orderItems,
     required this.orderNumber,
     required this.nameOrBranch,
@@ -40,7 +40,7 @@ class ReceiptPage extends StatelessWidget {
     double totalSum = 0;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Order Request Receipt',
           style: TextStyle(
             fontSize: 24,
@@ -67,7 +67,7 @@ class ReceiptPage extends StatelessWidget {
                   children: [
                     Text(
                       'Order Number: $orderNumber',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                         fontSize: 20,
@@ -75,15 +75,15 @@ class ReceiptPage extends StatelessWidget {
                     ),
                     Text(
                       'Date: $formattedDate',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      style: const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Customer Details:',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -93,20 +93,20 @@ class ReceiptPage extends StatelessWidget {
                     ),
                     Text(
                       'Name or Branch Name: $nameOrBranch',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     Text(
                       'Mobile Number: $mobile',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
                     Text(
                       'Email : $email',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
                     ),
 
                        Text(
                         'Address: $splitAddress',
-                        style: TextStyle(color: Colors.black, fontSize: 18),
+                        style: const TextStyle(color: Colors.black, fontSize: 18),
                       ),
 
 
@@ -124,7 +124,7 @@ class ReceiptPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: DataTable(
           columnSpacing: 20,
-          columns: [
+          columns: const [
             DataColumn(
               label: Text(
                 'Sr No',
@@ -184,16 +184,16 @@ class ReceiptPage extends StatelessWidget {
               final total = double.parse(item.price!) * item.qty;
               totalSum += total;
               return DataRow(
-                color: entry.key % 2 == 0 ? MaterialStateProperty.all(Colors.grey[100]) : MaterialStateProperty.all(Colors.white),
+                color: entry.key % 2 == 0 ? WidgetStateProperty.all(Colors.grey[100]) : WidgetStateProperty.all(Colors.white),
                 cells: [
-                  DataCell(Text('${entry.key + 1}', style: TextStyle(fontSize: 16))),
-                  DataCell(Text(item.itemId ?? '', style: TextStyle(fontSize: 16))),
-                  DataCell(Text(item.productName, style: TextStyle(fontSize: 16))),
-                  DataCell(Text(item.category ?? '', style: TextStyle(fontSize: 16))),
-                  DataCell(Text(item.subCategory ?? '', style: TextStyle(fontSize: 16))),
-                  DataCell(Text('\₹${item.price}', style: TextStyle(fontSize: 16))),
-                  DataCell(Text('${item.qty}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
-                  DataCell(Text('\₹${total}', style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
+                  DataCell(Text('${entry.key + 1}', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text(item.itemId ?? '', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text(item.productName, style: const TextStyle(fontSize: 16))),
+                  DataCell(Text(item.category ?? '', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text(item.subCategory ?? '', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text('₹${item.price}', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text('${item.qty}', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
+                  DataCell(Text('₹$total', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
                 ],
               );
             },
@@ -201,21 +201,21 @@ class ReceiptPage extends StatelessWidget {
               .toList()
             ..add(DataRow(
               cells: [
-                DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-                DataCell(Text('')),
-                DataCell(Text('')),
-                DataCell(Text('')),
-                DataCell(Text('')),
-                DataCell(Text('')),
-                DataCell(Text('')),
-                DataCell(Text('\₹${totalSum.toStringAsFixed(2)}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                const DataCell(Text('')),
+                const DataCell(Text('')),
+                const DataCell(Text('')),
+                const DataCell(Text('')),
+                const DataCell(Text('')),
+                const DataCell(Text('')),
+                DataCell(Text('₹${totalSum.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
               ],
             )),
         ),
       ),
     ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Footer with total products and total quantity
             Align(
               alignment: Alignment.centerRight,
@@ -224,17 +224,17 @@ class ReceiptPage extends StatelessWidget {
                 children: [
                   Text(
                     'Total Products: $totalProducts',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
                   ),
                   Text(
                     'Total Quantity: $totalQuantity',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
+                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
                   ),
 
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Centered Submit Button
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // Center the buttons horizontally
@@ -245,13 +245,13 @@ class ReceiptPage extends StatelessWidget {
                     foregroundColor: Colors.white
                   ),
                   onPressed: () async {
-                    await  getPresignedUrl(orderNumber+".pdf").then((presignedurl) async {
+                    await  getPresignedUrl("$orderNumber.pdf").then((presignedurl) async {
                       await convertHtmlToPdf(presignedurl).then((_){
                         invokeSnsApi(context, orderNumber,  presignedurl.split('?').first);
                       });
                     });
                   },
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 )
               ],
             ),
@@ -285,10 +285,10 @@ class ReceiptPage extends StatelessWidget {
       try {
         // Upload to S3
         await uploadToS3(presignedUrl, reader.result as List<int>);
-        logger.d('PDF sucessfully uploaded to S3 for order number: ${orderNumber}');
+        logger.d('PDF sucessfully uploaded to S3 for order number: $orderNumber');
       }
       catch (e) {
-        logger.e('Error during upload to S3 for order number: ${orderNumber}, error: $e');
+        logger.e('Error during upload to S3 for order number: $orderNumber, error: $e');
       }
     });
     final url = html.Url.createObjectUrlFromBlob(blob);
@@ -418,13 +418,13 @@ class ReceiptPage extends StatelessWidget {
   }
 
   Future<void> invokeSnsApi( BuildContext context, String ordernum, String receiptUrl) async {
-    final url = 'https://c1qdce11y0.execute-api.ap-south-1.amazonaws.com/prod/postEmails';
+    const url = 'https://c1qdce11y0.execute-api.ap-south-1.amazonaws.com/prod/postEmails';
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        body: json.encode({'message': "Order placed with order number ${ordernum}. You can download the order request receipt by visiting ${receiptUrl}", 'ordernum': ordernum}),
+        body: json.encode({'message': "Order placed with order number $ordernum. You can download the order request receipt by visiting $receiptUrl", 'ordernum': ordernum}),
       );
 
       if (response.statusCode == 200) {
@@ -437,7 +437,7 @@ class ReceiptPage extends StatelessWidget {
         );
       } else {
         print('Failed to send message: ${response.statusCode}');
-        final snackBar = SnackBar(
+        const snackBar = SnackBar(
           content: Text("Request Failed, Contact Support!"),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);

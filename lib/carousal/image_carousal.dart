@@ -5,7 +5,7 @@ import 'package:webcatalog/image/cached_image.dart';
 class ImageCarousal extends StatelessWidget {
    final List<ZoomableCachedImageWidget> images;
 
-  ImageCarousal({super.key, required this.images});
+  const ImageCarousal({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class ImageCarousal extends StatelessWidget {
 
           /// Height of the [ImageSlideshow].
           height: 400,
+
 
           /// The page to show when first creating the [ImageSlideshow].
           initialPage: 0,

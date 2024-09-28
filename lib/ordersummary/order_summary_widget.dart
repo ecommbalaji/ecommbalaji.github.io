@@ -11,13 +11,13 @@ class OrderSummaryWidget extends StatelessWidget {
     required this.orderItem,
     required this.onRemove,
     this.onQuantityChanged, // Nullable ValueChanged<int?>
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +35,7 @@ class OrderSummaryWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
             ),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,21 +43,20 @@ class OrderSummaryWidget extends StatelessWidget {
                 // Product Name
                 Text(
                   orderItem.productName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 // Product Description
-                if (orderItem.productName != null)
-                  Text(
-                    orderItem.productName!,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                Text(
+                  orderItem.productName,
+                  style: TextStyle(
+                    color: Colors.grey[600],
                   ),
-                SizedBox(height: 6),
+                ),
+                const SizedBox(height: 6),
                 // Quantity Selector
                 Row(
                   children: [
@@ -78,20 +77,20 @@ class OrderSummaryWidget extends StatelessWidget {
                       ))
                           .toList(),
                       underline: Container(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 6),
+                const SizedBox(height: 6),
                 // Divider
                 Divider(color: Colors.grey[300]),
                 // Remove Button
                 TextButton(
                   onPressed: onRemove,
-                  child: Text(
+                  child: const Text(
                     'Remove',
                     style: TextStyle(
                       color: Colors.red,

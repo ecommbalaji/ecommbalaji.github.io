@@ -9,7 +9,7 @@ class DataRowWidget extends StatefulWidget {
   final List<OrderItem> gridItems;
   int selectedQty = 0;
 
-  DataRowWidget({
+  DataRowWidget({super.key, 
     required this.index,
     required this.item,
     required this.gridItems,
@@ -56,23 +56,23 @@ class _DataRowWidgetState extends State<DataRowWidget> {
     return Expanded(
       flex: (flex * 100).toInt(), // Convert fraction to flex value
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-        constraints: BoxConstraints(maxHeight: 60), // Set a max height
-        child: Scrollbar(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        constraints: const BoxConstraints(maxHeight: 60), // Set a max height
+      /*  child: Scrollbar(
           thumbVisibility: true, // You can set this to false if you want it to show on scroll
           child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
+            scrollDirection: Axis.vertical,*/
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.black87, // Data text color
               ),
               textAlign: align,
             ),
           ),
-        ),
-      ),
+   /*     ),
+      ),*/
     );
   }
 }

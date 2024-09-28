@@ -7,13 +7,15 @@ import 'contact_details.dart';
 import '../ordersummary/order_summary_widget.dart';
 import '../statemanagement/order_cubit.dart';
 import '../vo/order_item.dart';
-import 'receipt_page.dart'; // Import the ReceiptPage
+// Import the ReceiptPage
 
 class OrderSummaryPage extends StatelessWidget {
+  const OrderSummaryPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Order Summary')),
+      appBar: AppBar(title: const Text('Order Summary')),
       body: Column(
         children: [
           Flexible(
@@ -33,7 +35,7 @@ class OrderSummaryPage extends StatelessWidget {
                       },
                       onQuantityChanged: (newQty) {
                         context.read<CartCubit>().addToCart(newQty!-item.qty);
-                        context.read<OrderCubit>().updateOrderQty(item, newQty!);
+                        context.read<OrderCubit>().updateOrderQty(item, newQty);
                       },
                     );
                   },
@@ -54,11 +56,11 @@ class OrderSummaryPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CustomerFormWidget(),
+                    builder: (context) => const CustomerFormWidget(),
                   ),
                 );
               },
-              child: Text('Contact Details'),
+              child: const Text('Contact Details'),
             ),
           )
       ),

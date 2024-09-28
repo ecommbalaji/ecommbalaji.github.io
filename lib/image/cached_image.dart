@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 class ZoomableCachedImageWidget extends StatelessWidget {
   final String imageUrl;
 
-  const ZoomableCachedImageWidget({Key? key, required this.imageUrl}) : super(key: key);
+  const ZoomableCachedImageWidget({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ZoomableCachedImageWidget extends StatelessWidget {
         errorWidget: (context, url, error) => Container(
         //  height: 200.0,
           color: Colors.grey[300], // Error placeholder color or widget
-          child: Center(child: Icon(Icons.error)),
+          child: const Center(child: Icon(Icons.error)),
         ),
         imageBuilder: (context, imageProvider) => Container(
          // height: 200.0,
@@ -34,7 +34,7 @@ class ZoomableCachedImageWidget extends StatelessWidget {
           // You can add additional child widgets here if needed
         ),
         fit: BoxFit.contain, // Adjust as per your needs
-        fadeInDuration: Duration(milliseconds: 300), // Duration of the fade-in effect
+        fadeInDuration: const Duration(milliseconds: 300), // Duration of the fade-in effect
         fadeInCurve: Curves.easeIn, // Curve for the fade-in effect
       ),
     );

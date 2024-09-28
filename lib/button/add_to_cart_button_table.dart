@@ -33,7 +33,7 @@ class _AddToCartButtonTableState extends State<AddToCartButtonTable> {
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
-      child: Text('Add to cart'), // Toggle button text
+      child: const Text('Add to cart'), // Toggle button text
     );
   }
 }

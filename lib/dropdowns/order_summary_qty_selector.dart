@@ -4,7 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 class OrderSummaryQtySelector extends StatefulWidget {
   final ValueChanged<int> onChanged;
 
-  const OrderSummaryQtySelector({Key? key, required this.onChanged}) : super(key: key);
+  const OrderSummaryQtySelector({super.key, required this.onChanged});
 
   @override
   _OrderSummaryQtySelectorState createState() => _OrderSummaryQtySelectorState();
@@ -15,15 +15,15 @@ class _OrderSummaryQtySelectorState extends State<OrderSummaryQtySelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: DropdownButton2<int>(
         isExpanded: false,
         isDense: true,
         items: List.generate(1000, (index) => index)
             .map((value) => DropdownMenuItem<int>(
-          child: Text('$value'),
           value: value,
+          child: Text('$value'),
         ))
             .toList(),
         value: selectedValue,

@@ -4,7 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 class ProductTableQtySelector extends StatefulWidget {
   final ValueChanged<int> onChanged;
 
-  const ProductTableQtySelector({Key? key, required this.onChanged}) : super(key: key);
+  const ProductTableQtySelector({super.key, required this.onChanged});
 
   @override
   _ProductTableQtySelectorState createState() => _ProductTableQtySelectorState();
@@ -15,15 +15,15 @@ class _ProductTableQtySelectorState extends State<ProductTableQtySelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 40,
       child: DropdownButton2<int>(
         isExpanded: false,
         isDense: true,
         items: List.generate(1001, (index) => index)
             .map((value) => DropdownMenuItem<int>(
-          child: Text('$value'),
           value: value,
+          child: Text('$value'),
         ))
             .toList(),
         value: selectedValue,

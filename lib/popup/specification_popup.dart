@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SpecificationPopup extends StatelessWidget {
   final String specs;
-   SpecificationPopup({super.key, required this.specs});
+   const SpecificationPopup({super.key, required this.specs});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class SpecificationPopup extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Specifications'),
-                  content:  Text(specs, style: TextStyle(fontSize: 14),),
+                  content:  Text(specs, style: const TextStyle(fontSize: 14),),
                   actions: [
                     TextButton(
                       onPressed: () {
@@ -32,7 +31,7 @@ class SpecificationPopup extends StatelessWidget {
             );
           },
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.zero, // Set the border radius to zero for straight edges
             ),
           ),

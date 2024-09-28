@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:webcatalog/button/add_to_cart_button_table.dart';
 import 'package:webcatalog/table/rows/product_table_row.dart';
 import 'package:webcatalog/vo/order_item.dart';
 
-import '../button/add_to_cart_button_grid.dart';
-import '../dropdowns/product_table_qty_selector.dart';
 
 class ProductTable extends StatelessWidget {
   final List<OrderItem> gridItems;
   int selectedQty = 0;
 
-  ProductTable({required this.gridItems});
+  ProductTable({super.key, required this.gridItems});
 
   final Logger logger = Logger();
 
@@ -45,7 +42,7 @@ class ProductTable extends StatelessWidget {
           child: ListView.builder(
             itemCount: gridItems.length,
             itemBuilder: (context, index) {
-              return _buildRow(index, index % 2 == 0 ? Colors.grey[100]! : Colors.white!);
+              return _buildRow(index, index % 2 == 0 ? Colors.grey[100]! : Colors.white);
             },
           ),
         )
@@ -57,11 +54,11 @@ class ProductTable extends StatelessWidget {
     return Expanded(
       flex: (flex * 100).toInt(), // Convert fraction to flex value
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         child: Center(
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
               color: Colors.blue, // Header text color

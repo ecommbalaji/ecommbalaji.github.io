@@ -5,13 +5,12 @@ import 'package:webcatalog/vo/order_item.dart';
 
 import '../button/add_to_cart_button_grid.dart';
 import '../carousal/image_carousal.dart';
-import '../dropdowns/product_table_qty_selector.dart';
 import '../image/cached_image.dart';
 
 class ProductCard extends StatefulWidget {
   final OrderItem orderItem;
   int selectedQty = 0;
-  ProductCard(this.orderItem);
+  ProductCard(this.orderItem, {super.key});
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -24,7 +23,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     String orderItmName = widget.orderItem.productName.trim().replaceAll("\n", '');
     List<ZoomableCachedImageWidget> lisTImages = [];
     List<String>? imagePaths = widget.orderItem.images;
-    if(imagePaths != null && imagePaths.length > 0){
+    if(imagePaths != null && imagePaths.isNotEmpty){
       for(var path in imagePaths)
       {
         lisTImages.add(ZoomableCachedImageWidget(imageUrl: path));
@@ -46,7 +45,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             children: [
               const SizedBox(height: 10.0),
              // ZoomableCachedImageWidget(imageUrl: widget.orderItem.imageUrl!),
-              Container(
+              SizedBox(
                 height: 200,
                 child:   ImageCarousal(images: lisTImages)
               ),
@@ -55,7 +54,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Item ID
               Text(
                 'Item ID: ${widget.orderItem.itemId.trim()}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14.0,
                 ),
               ),
@@ -65,7 +64,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                 message: orderItmName,
                 child: Text(
                   orderItmName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
                   ),
@@ -78,7 +77,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Product Category
               Text(
                 'Category: ${widget.orderItem.category ?? ''}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14.0,
                 ),
               ),
@@ -86,14 +85,14 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Product Subcategory
               Text(
                 'Subcategory: ${widget.orderItem.subCategory ?? ''}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14.0,
                 ),
               ),
               const SizedBox(height: 5.0),
               Text(
                 'Price: ₹${widget.orderItem.price ?? ''}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14.0,
                 ),
               ),
@@ -106,7 +105,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               Row(
                 children: [
                   AddToCartButtonGrid(selectedQuantity: widget.selectedQty, orderItem: widget.orderItem),
-                  Spacer(),
+                  const Spacer(),
                   GridQtySelector(onChanged: (int value) {
                     setState(() {
                       widget.selectedQty = value;

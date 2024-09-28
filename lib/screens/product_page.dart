@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../badge/badge.dart';
 import '../cards/product_card.dart';
 import '../dropdowns/category_subcategory_filter.dart';
-import '../dropdowns/product_table_qty_selector.dart';
-import '../button/add_to_cart_button_grid.dart';
 import '../service/order_item_service.dart';
 import '../table/product_table.dart';
 import '../vo/order_item.dart';
 
 class ProductPage extends StatefulWidget {
+  const ProductPage({super.key});
+
   @override
   _ProductPageState createState() => _ProductPageState();
 }
@@ -53,8 +53,8 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
         title: Container(
           height: 40,
           width: MediaQuery.of(context).size.width * 0.5,
-          margin: EdgeInsets.symmetric(horizontal: 16.0),
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(25.0),
@@ -63,7 +63,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                 color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -73,7 +73,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                 _searchQuery = value;
               });
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Search By Products/Item Id/Category/Subcategory',
               border: InputBorder.none,
               prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -97,12 +97,12 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
               },
             ),
           ),
-          ShoppingCartBadge(),
-          SizedBox(width: 16),
+          const ShoppingCartBadge(),
+          const SizedBox(width: 16),
         ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(icon: Icon(Icons.grid_view), text: 'Grid View'),
             Tab(icon: Icon(Icons.table_chart), text: 'Table View'),
           ],
@@ -110,19 +110,19 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
           indicatorColor: Colors.black,
           unselectedLabelColor: Colors.grey,
           indicatorWeight: 4,
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                physics: BouncingScrollPhysics(), // Smooth scroll
+                physics: const BouncingScrollPhysics(), // Smooth scroll
                 children: [
                   GridView.builder(
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -138,8 +138,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                       return ProductCard(item);
                     },
                   ),
-                  SingleChildScrollView(
-
+                SingleChildScrollView(
                     child: SizedBox(
                      height: 800,
                       width: MediaQuery.of(context).size.width,

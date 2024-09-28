@@ -7,6 +7,8 @@ import '../statemanagement/order_cubit.dart';
 import '../vo/order_item.dart';
 
 class CustomerFormWidget extends StatefulWidget {
+  const CustomerFormWidget({super.key});
+
   @override
   _CustomerFormWidgetState createState() => _CustomerFormWidgetState();
 }
@@ -40,7 +42,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customer Details'),
+        title: const Text('Customer Details'),
       ),
       body: Center(
         child: FractionallySizedBox(
@@ -56,7 +58,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                     children: [
                       TextFormField(
                         controller: _nameBranchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Name / Branch',
                           border: OutlineInputBorder(),
                         ),
@@ -67,10 +69,10 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _mobileController,
-                         decoration: InputDecoration(
+                         decoration: const InputDecoration(
                           labelText: 'Mobile Number',
                           border: OutlineInputBorder(),
                         ),
@@ -85,10 +87,10 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                           border: OutlineInputBorder(),
                         ),
@@ -100,24 +102,24 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       TextFormField(
                         maxLines: 5,
                         controller: _addressController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Address',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.streetAddress,
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white
                         ),
                         onPressed: () => _navigateToOrderReceipt(context),
-                        child: Text('Proceed To Checkout'),
+                        child: const Text('Proceed To Checkout'),
                       ),
                     ],
                   ),
