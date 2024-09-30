@@ -12,7 +12,8 @@ class ZoomableCachedImageWidget extends StatelessWidget {
       onTap: () {
         showZoomedImage(context, imageUrl);
       },
-      child: CachedNetworkImage(
+      child:Image.network(imageUrl, fit: BoxFit.contain),
+/*      child: CachedNetworkImage(
         imageUrl: imageUrl,
         placeholder: (context, url) => Container(
        //   height: 200.0,
@@ -36,7 +37,7 @@ class ZoomableCachedImageWidget extends StatelessWidget {
         fit: BoxFit.contain, // Adjust as per your needs
         fadeInDuration: const Duration(milliseconds: 300), // Duration of the fade-in effect
         fadeInCurve: Curves.easeIn, // Curve for the fade-in effect
-      ),
+      ),*/
     );
   }
 
@@ -54,10 +55,11 @@ class ZoomableCachedImageWidget extends StatelessWidget {
               panEnabled: true,
               minScale: 1.0,
               maxScale: 2.5, // Adjust the maximum zoom level as needed
-              child: CachedNetworkImage(
+              child: Image.network(imageUrl, fit: BoxFit.cover)
+             /* child: CachedNetworkImage(
                 imageUrl: imageUrl,
                 fit: BoxFit.contain,
-              ),
+              ),*/
             ),
           ),
         );

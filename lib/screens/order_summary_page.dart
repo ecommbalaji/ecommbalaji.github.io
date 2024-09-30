@@ -31,11 +31,11 @@ class OrderSummaryPage extends StatelessWidget {
                       orderItem: item,
                       onRemove: () {
                         context.read<CartCubit>().removeFromCart(item.qty);
-                        context.read<OrderCubit>().removeOrderItem(item);
+                        context.read<OrderCubit>().removeOrderItem(item, item.selectedSlotIndex!);
                       },
                       onQuantityChanged: (newQty) {
                         context.read<CartCubit>().addToCart(newQty!-item.qty);
-                        context.read<OrderCubit>().updateOrderQty(item, newQty);
+                        context.read<OrderCubit>().updateOrderQty(item, newQty, item.selectedSlotIndex!);
                       },
                     );
                   },

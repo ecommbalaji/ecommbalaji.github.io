@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../vo/order_item.dart';
 
 class OrderSummaryWidget extends StatelessWidget {
@@ -10,7 +9,7 @@ class OrderSummaryWidget extends StatelessWidget {
   const OrderSummaryWidget({
     required this.orderItem,
     required this.onRemove,
-    this.onQuantityChanged, // Nullable ValueChanged<int?>
+    this.onQuantityChanged,
     super.key,
   });
 
@@ -26,7 +25,7 @@ class OrderSummaryWidget extends StatelessWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              image: orderItem.images != null
+              image: orderItem.images != null && orderItem.images!.isNotEmpty
                   ? DecorationImage(
                 image: NetworkImage(orderItem.images![0]),
                 fit: BoxFit.cover,
@@ -49,9 +48,25 @@ class OrderSummaryWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                // Product Description
+                // Product ID
                 Text(
-                  orderItem.productName,
+                  'Product ID: ${orderItem.itemId}',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 6),
+                // Selected Slot + Unit
+                Text(
+                  'Selected Slot: ${orderItem.selectedSlot ?? 'N/A'} ${orderItem.unit ?? ''}',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 6),
+                // Price
+                Text(
+                  'Price: ₹${orderItem.price ?? '0'}',
                   style: TextStyle(
                     color: Colors.grey[600],
                   ),

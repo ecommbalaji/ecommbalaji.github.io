@@ -7,15 +7,18 @@ import '../statemanagement/order_cubit.dart';
 class AddToCartButtonGrid extends StatefulWidget {
   final int selectedQuantity;
   final OrderItem orderItem;
+  final int slotIndex;
+  final String? slot;
+  final String? price;
 
-  const AddToCartButtonGrid({super.key, required this.selectedQuantity, required this.orderItem});
+  const AddToCartButtonGrid({super.key, required this.selectedQuantity, required this.orderItem, required this.slotIndex, required this.slot, this.price});
   @override
   _AddToCartButtonGridState createState() => _AddToCartButtonGridState();
 }
 
 class _AddToCartButtonGridState extends State<AddToCartButtonGrid> {
   void _addProductToCart(BuildContext context) {
-  bool canAdd =  context.read<OrderCubit>().addOrderItem(widget.orderItem, widget.selectedQuantity);
+  bool canAdd =  context.read<OrderCubit>().addOrderItem(widget.orderItem, widget.selectedQuantity, widget.slotIndex, widget.slot, widget.price);
   if(!canAdd){
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Quantity for a given product cannot be more than 1000')));
   } else {

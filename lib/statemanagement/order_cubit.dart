@@ -7,11 +7,11 @@ class OrderCubit extends Cubit<List<OrderItem>> {
 
   OrderCubit() : super([]);
 
-  bool addOrderItem(OrderItem newItem, int selectedQty) {
-    logger.d('Attempting to add item: ${newItem.itemId}, selectedQty: $selectedQty');
+  bool addOrderItem(OrderItem newItem, int selectedQty, int slotIndex, String? slotValue, String? price) {
+    logger.d('Attempting to add item: ${newItem.itemId}, slotIndex:$slotIndex selectedQty: $selectedQty');
 
     // Check if the item already exists in the list
-    int existingIndex = state.indexWhere((item) => item.itemId == newItem.itemId);
+    int existingIndex = state.indexWhere((item) => item.itemId == newItem.itemId && item.selectedSlotIndex == slotIndex);
     logger.d('Existing index for item ${newItem.itemId}: $existingIndex');
 
     if (existingIndex != -1) {
@@ -27,20 +27,28 @@ class OrderCubit extends Cubit<List<OrderItem>> {
 
       int newQty = existingQty + selectedQty;
       logger.d('Updating quantity for item ${newItem.itemId} to $newQty');
-      updateOrderQty(newItem, newQty);
+      updateOrderQty(newItem, newQty, slotIndex);
       return true;
     } else {
       // Item doesn't exist, add it to the list
       newItem.qty = selectedQty;
-      state.add(newItem);
+      newItem.selectedSlotIndex= slotIndex;
+      newItem.selectedSlot = slotValue;
+      newItem.price = price;
+
+      OrderItem stateItem =OrderItem.clone(newItem); // clone the item to create a new object and put it into state,
+      // otherwise the state will hve multiple copies of the same object
+
+      state.add(stateItem);
+
       logger.d('Adding new item ${newItem.itemId} with quantity $selectedQty');
       emit(List.from(state));
       return true;
     }
   }
 
-  void removeOrderItem(OrderItem itemToRemove) {
-    final index = state.indexWhere((item) => item.itemId == itemToRemove.itemId);
+  void removeOrderItem(OrderItem itemToRemove, int slotIndex) {
+    final index = state.indexWhere((item) => item.itemId == itemToRemove.itemId && item.selectedSlotIndex == slotIndex);
     if (index != -1) {
       state.removeAt(index);
       logger.d('Removed item ${itemToRemove.itemId} from the order');
@@ -50,8 +58,8 @@ class OrderCubit extends Cubit<List<OrderItem>> {
     }
   }
 
-  void updateOrderQty(OrderItem itemToUpdate, int newQty) {
-    final index = state.indexWhere((item) => item.itemId == itemToUpdate.itemId);
+  void updateOrderQty(OrderItem itemToUpdate, int newQty, int slotIndex) {
+    final index = state.indexWhere((item) => item.itemId == itemToUpdate.itemId && item.selectedSlotIndex == slotIndex);
     if (index != -1) {
       state[index].qty= newQty;
       logger.d('Updated quantity for item ${itemToUpdate.itemId} to $newQty');

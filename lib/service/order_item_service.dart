@@ -1,8 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_excel/excel.dart';
 import 'package:http/http.dart' as http;
-
-
 import '../vo/order_item.dart';
 
 class OrderItemService {
@@ -29,16 +27,39 @@ class OrderItemService {
       var orderItem = OrderItem(
         itemId: row[0]?.value?.toString() ?? '',
         productName: row[1]?.value?.toString() ?? '',
-        qty:  0,
+        qty: 0,
         category: row[2]?.value?.toString(),
         subCategory: row[3]?.value?.toString(),
         price: row[4]?.value?.toString(),
         remarks: row[5]?.value?.toString(),
-        images: row[6]?.value?.toString().split(",")
+        images: row[6]?.value?.toString().split(","),
+        dimension: row[7]?.value?.toString(), // Assuming this is the Dimension column
+        unit: row[8]?.value?.toString(),       // Assuming this is the Unit column
+        slotPriceMapping: _parseSlotPriceMapping(row[9]?.value?.toString()), // Assuming this is the SlotPriceMapping column
       );
       orderItems.add(orderItem);
     }
 
     return orderItems;
+  }
+
+  // Helper method to parse the slot price mapping from a string
+  Map<String, double>? _parseSlotPriceMapping(String? slotPriceMappingStr) {
+    if (slotPriceMappingStr == null || slotPriceMappingStr.isEmpty) {
+      return null;
+    }
+
+    Map<String, double> slotPrices = {};
+    List<String> slots = slotPriceMappingStr.split(',');
+
+    for (String slot in slots) {
+      List<String> parts = slot.split(':');
+      if (parts.length == 2) {
+        String key = parts[0].trim();
+        double value = double.tryParse(parts[1].trim()) ?? 0.0;
+        slotPrices[key] = value;
+      }
+    }
+    return slotPrices;
   }
 }
