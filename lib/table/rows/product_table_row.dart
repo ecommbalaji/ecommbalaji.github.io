@@ -8,8 +8,12 @@ class DataRowWidget extends StatefulWidget {
   final OrderItem item;
   final List<OrderItem> gridItems;
   int selectedQty = 0;
+  String? selectedSlot; // Field to store the selected slot
+  int slotIndex = 0;
+  String? slotPrice;
 
-  DataRowWidget({super.key, 
+  DataRowWidget({
+    super.key,
     required this.index,
     required this.item,
     required this.gridItems,
@@ -20,6 +24,18 @@ class DataRowWidget extends StatefulWidget {
 }
 
 class _DataRowWidgetState extends State<DataRowWidget> {
+  List<String> slotOptions = [];
+  String? selectedSlot;
+
+  @override
+  void initState() {
+    super.initState();
+    // Populate slot options from SlotPriceMapping
+    if (widget.item.slotPriceMapping != null) {
+      slotOptions = widget.item.slotPriceMapping!.keys.toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -29,8 +45,11 @@ class _DataRowWidgetState extends State<DataRowWidget> {
         _buildDataCell(widget.item.productName, 0.2, TextAlign.left),
         _buildDataCell(widget.item.category ?? '', 0.15, TextAlign.center),
         _buildDataCell(widget.item.subCategory ?? '', 0.15, TextAlign.center),
-        _buildDataCell('₹${widget.item.price ?? ''}', 0.15, TextAlign.center),
+        _buildDataCell('₹${_getPriceBasedOnSlot()}', 0.15, TextAlign.center), // Updated price based on slot
         _buildDataCell(widget.item.remarks ?? '', 0.15, TextAlign.center),
+        _buildDataCell(widget.item.dimension ?? '', 0.15, TextAlign.center),
+        _buildDataCell(widget.item.unit ?? '', 0.15, TextAlign.center),
+        _buildSlotDropdown(), // Slot dropdown
         Expanded(
           flex: (0.10 * 100).toInt(),
           child: ProductTableQtySelector(
@@ -45,34 +64,60 @@ class _DataRowWidgetState extends State<DataRowWidget> {
           flex: (0.15 * 100).toInt(),
           child: AddToCartButtonTable(
             orderItem: widget.gridItems[widget.index],
-            selectedQuantity: widget.selectedQty,
+            selectedQuantity: widget.selectedQty, slotIndex: widget.slotIndex, slotValue: widget.selectedSlot , slotPrice: widget.slotPrice,
           ),
         ),
       ],
     );
   }
 
+  Widget _buildSlotDropdown() {
+    return Expanded(
+      flex: (0.10 * 100).toInt(),
+      child: DropdownButton<String>(
+        hint: const Text("Select Slot"),
+        value: selectedSlot,
+        isExpanded: true,
+        items: slotOptions.map((String slot) {
+          return DropdownMenuItem<String>(
+            value: slot,
+            child: Text(slot),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            selectedSlot = value;
+            widget.selectedSlot = value; // Update the selected slot in the parent widget
+            widget.slotIndex = slotOptions.indexOf(value!);
+            widget.slotPrice = _getPriceBasedOnSlot();
+          });
+        },
+      ),
+    );
+  }
+
+  String _getPriceBasedOnSlot() {
+    if (selectedSlot != null && widget.item.slotPriceMapping != null) {
+      return widget.item.slotPriceMapping![selectedSlot!].toString() ?? '0';
+    }
+    return widget.item.price?.toString() ?? '0';
+  }
+
   Widget _buildDataCell(String text, double flex, TextAlign align) {
     return Expanded(
-      flex: (flex * 100).toInt(), // Convert fraction to flex value
+      flex: (flex * 100).toInt(),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-        constraints: const BoxConstraints(maxHeight: 60), // Set a max height
-      /*  child: Scrollbar(
-          thumbVisibility: true, // You can set this to false if you want it to show on scroll
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,*/
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black87, // Data text color
-              ),
-              textAlign: align,
-            ),
+        constraints: const BoxConstraints(maxHeight: 60),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.black87,
           ),
-   /*     ),
-      ),*/
+          textAlign: align,
+        ),
+      ),
     );
   }
 }
