@@ -157,6 +157,12 @@ class ReceiptPage extends StatelessWidget {
             ),
             DataColumn(
               label: Text(
+                'Slot',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ),
+            DataColumn(
+              label: Text(
                 'Price (per Unit)',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
@@ -191,6 +197,7 @@ class ReceiptPage extends StatelessWidget {
                   DataCell(Text(item.productName, style: const TextStyle(fontSize: 16))),
                   DataCell(Text(item.category ?? '', style: const TextStyle(fontSize: 16))),
                   DataCell(Text(item.subCategory ?? '', style: const TextStyle(fontSize: 16))),
+                  DataCell(Text(item.selectedSlot ?? '', style: const TextStyle(fontSize: 16))),
                   DataCell(Text('₹${item.price}', style: const TextStyle(fontSize: 16))),
                   DataCell(Text('${item.qty}', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
                   DataCell(Text('₹$total', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
@@ -202,6 +209,7 @@ class ReceiptPage extends StatelessWidget {
             ..add(DataRow(
               cells: [
                 const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                const DataCell(Text('')),
                 const DataCell(Text('')),
                 const DataCell(Text('')),
                 const DataCell(Text('')),
@@ -383,6 +391,7 @@ class ReceiptPage extends StatelessWidget {
               <th>Product Name</th>
               <th>Category</th>
               <th>Subcategory</th>
+              <th>Slot</th>
               <th>Price</th>
               <th>Quantity</th>
               <th>Total</th>
@@ -400,6 +409,7 @@ class ReceiptPage extends StatelessWidget {
           <td>${item.productName}</td>
           <td>${item.category ?? ''}</td>
           <td>${item.subCategory ?? ''}</td>
+           <td>${item.selectedSlot ?? ''}</td>
           <td>INR ${item.price ?? ''}</td>
           <td>${item.qty}</td>
            <td>INR ${totalPrice.toStringAsFixed(2)}</td>
