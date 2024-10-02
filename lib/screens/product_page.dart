@@ -126,8 +126,8 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
                 children: [
                   GridView.builder(
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 450,
-                      mainAxisExtent: 550,
+                      maxCrossAxisExtent: 455,
+                      mainAxisExtent: 570,
                       childAspectRatio: 1,
                       mainAxisSpacing: 10.0,
                       crossAxisSpacing: 10.0

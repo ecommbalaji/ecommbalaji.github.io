@@ -11,7 +11,7 @@ class GridQtySelector extends StatefulWidget {
 }
 
 class _GridQtySelectorState extends State<GridQtySelector> {
-  int selectedValue = 0; // Initial selected quantity
+  int? selectedValue; // Make selectedValue nullable
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +27,16 @@ class _GridQtySelectorState extends State<GridQtySelector> {
         ))
             .toList(),
         value: selectedValue,
+        hint: const Text('Quantity', style: TextStyle(color: Colors.black54)), // Hint text
         onChanged: (value) {
           setState(() {
-            selectedValue = value!;
-            widget.onChanged(selectedValue);
+            selectedValue = value; // Update the selected value
+            widget.onChanged(selectedValue!);
           });
         },
         buttonStyleData: ButtonStyleData(
           height: 50,
-          width: 100,
+          width: 105,
           padding: const EdgeInsets.only(left: 14, right: 14),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
@@ -57,7 +58,7 @@ class _GridQtySelectorState extends State<GridQtySelector> {
           width: 100,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-          )
+          ),
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,
