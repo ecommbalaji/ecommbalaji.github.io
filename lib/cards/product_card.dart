@@ -29,6 +29,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty) {
       widget.selectedSlot = widget.orderItem.slotPriceMapping!.keys.first;
       selectedPrice = widget.orderItem.slotPriceMapping![widget.selectedSlot];
+      widget.selectedPrice = selectedPrice.toString();
     }
   }
 
@@ -175,6 +176,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             items: widget.orderItem.slotPriceMapping!.keys.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
+
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(value),
