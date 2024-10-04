@@ -22,6 +22,7 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClientMixin {
   double? selectedPrice;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -91,12 +92,12 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Price Display
               _buildLabel('Price: ₹${selectedPrice?.toString() ?? widget.orderItem.price ?? ''}'),
               const SizedBox(height: 12.0),
-              // Dropdown for Slot Selection
+              // Selectable Buttons for Slot Selection
               if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
-                _buildDropdown(),
+                _buildSelectableButtons(),
               const SizedBox(height: 12.0),
               // Specifications
-              Flexible(
+              Expanded(
                 child: SpecificationPopup(specs: 'Specifications: ${widget.orderItem.remarks ?? ''}'),
               ),
               const SizedBox(height: 12.0),
@@ -132,59 +133,84 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     );
   }
 
-  Widget _buildDropdown() {
+  Widget _buildSelectableButtons() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.blueAccent, width: 1),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      height: 150, // Set a fixed height for the scrollable area
+      child: Row(
         children: [
-          if (widget.selectedSlot != null) // Show the dimension (unit) when a slot is selected
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-              child: Text(
-                '${widget.orderItem.dimension} (${widget.orderItem.unit})',
-                style: const TextStyle(fontSize: 14.0, color: Colors.blueAccent, fontWeight: FontWeight.bold),
+          Expanded(
+            child: GridView.builder(
+              controller: _scrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, // At least 3 buttons in a row
+                childAspectRatio: 2, // Adjusted aspect ratio for oval shape
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
               ),
+              itemCount: widget.orderItem.slotPriceMapping!.length,
+              itemBuilder: (context, index) {
+                String slot = widget.orderItem.slotPriceMapping!.keys.elementAt(index);
+                bool isSelected = widget.selectedSlot == slot; // Check if the slot is selected
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      widget.selectedSlot = slot;
+                      selectedPrice = widget.orderItem.slotPriceMapping![slot];
+                      widget.slotIndex = index;
+                      widget.selectedPrice = selectedPrice?.toString();
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0), // Smaller padding for smaller buttons
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.blueAccent : Colors.white, // Highlight if selected
+                      borderRadius: BorderRadius.circular(30.0), // Oval shape
+                      border: Border.all(
+                        color: Colors.blueAccent,
+                        width: 1,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        slot,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black, // Change text color based on selection
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10.0, // Smaller font size
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          DropdownButton<String>(
-            hint: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text('Select ${widget.orderItem.dimension} (${widget.orderItem.unit})'),
-            ),
-            isExpanded: true,
-            value: widget.selectedSlot,
-            onChanged: (String? newValue) {
-              setState(() {
-                widget.selectedSlot = newValue;
-                selectedPrice = widget.orderItem.slotPriceMapping![newValue];
-                widget.slotIndex = widget.orderItem.slotPriceMapping!.keys.toList().indexOf(newValue!);
-                widget.selectedPrice = selectedPrice?.toString();
-              });
-            },
-            items: widget.orderItem.slotPriceMapping!.keys.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(value),
-                ),
-              );
-            }).toList(),
-            underline: SizedBox(),
-            style: const TextStyle(color: Colors.black),
+          ),
+          Column(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                onPressed: () {
+                  // Scroll up
+                  _scrollController.animateTo(
+                    _scrollController.position.pixels - 50,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+              ),
+              const SizedBox(height: 8.0), // Space between the button and the arrows
+              IconButton(
+                icon: const Icon(Icons.arrow_downward),
+                onPressed: () {
+                  // Scroll down
+                  _scrollController.animateTo(
+                    _scrollController.position.pixels + 50,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),
