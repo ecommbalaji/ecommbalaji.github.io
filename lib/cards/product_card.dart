@@ -113,7 +113,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     orderItem: widget.orderItem,
                     slotIndex: widget.slotIndex,
                     slot: widget.selectedSlot,
-                    price: widget.selectedPrice,
+                    price: widget.selectedPrice ?? widget.orderItem.price,
                   ),
                   const Spacer(),
                   GridQtySelector(onChanged: (int value) {
