@@ -95,12 +95,16 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               // Selectable Buttons for Slot Selection
               if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
                 _buildSelectableButtons(),
-              const SizedBox(height: 12.0),
+
               // Specifications
-              Expanded(
-                child: SpecificationPopup(specs: 'Specifications: ${widget.orderItem.remarks ?? ''}'),
-              ),
-              const SizedBox(height: 12.0),
+              if (widget.orderItem.remarks != null && widget.orderItem.remarks!.isNotEmpty) ...[
+                const SizedBox(height: 12.0),
+                Expanded(
+                  child: SpecificationPopup(specs: 'Specifications: ${widget.orderItem.remarks ?? ''}'),
+                ),
+              ],
+
+
               // Add to Cart Button
               Row(
                 children: [
@@ -135,7 +139,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
 
   Widget _buildSelectableButtons() {
     return Container(
-      height: 150, // Set a fixed height for the scrollable area
+      height: 90, // Set a fixed height for the scrollable area
       child: Row(
         children: [
           Expanded(
@@ -143,7 +147,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               controller: _scrollController,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, // At least 3 buttons in a row
-                childAspectRatio: 2, // Adjusted aspect ratio for oval shape
+                childAspectRatio: 4, // Adjusted aspect ratio for oval shape
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
               ),
@@ -161,7 +165,7 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0), // Smaller padding for smaller buttons
+                  //  padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 3), // Smaller padding for smaller buttons
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.blueAccent : Colors.white, // Highlight if selected
                       borderRadius: BorderRadius.circular(30.0), // Oval shape
@@ -175,8 +179,8 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                         slot,
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.black, // Change text color based on selection
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10.0, // Smaller font size
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 16.0, // Smaller font size
                         ),
                       ),
                     ),
