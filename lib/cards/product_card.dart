@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webcatalog/dropdowns/grid_qty_selector.dart';
 import 'package:webcatalog/popup/specification_popup.dart';
+import 'package:webcatalog/snackbar/top_snackbar.dart';
 import 'package:webcatalog/vo/order_item.dart';
 
 import '../button/add_to_cart_button_grid.dart';
 import '../carousal/image_carousal.dart';
 import '../image/cached_image.dart';
+
+import 'package:flutter/services.dart'; // For Clipboard
 
 class ProductCard extends StatefulWidget {
   final OrderItem orderItem;
@@ -36,6 +39,8 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     String orderItmName = widget.orderItem.productName.trim().replaceAll("\n", '');
     List<ZoomableCachedImageWidget> lisTImages = [];
     List<String>? imagePaths = widget.orderItem.images;
@@ -49,89 +54,115 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     return Material(
       color: Colors.white,
       elevation: 0,
-      child: Card(
-        color: Colors.white.withOpacity(0.9),
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0), // Increased padding for elegance
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10.0),
-              SizedBox(
-                height: 200,
-                child: ImageCarousal(images: lisTImages),
-              ),
-              const SizedBox(height: 12.0),
-
-              // Selectable Text that includes all the details in one block
-              SelectableText.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Item ID: ${widget.orderItem.itemId.trim()}\n',
-                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                    ),
-                    TextSpan(
-                      text: 'Product Name: $orderItmName\n',
-                      style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: 'Category: ${widget.orderItem.category ?? ''}\n',
-                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                    ),
-                    TextSpan(
-                      text: 'Subcategory: ${widget.orderItem.subCategory ?? ''}\n',
-                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                    ),
-                    TextSpan(
-                      text: 'Price: ₹${selectedPrice?.toString() ?? widget.orderItem.price ?? ''}\n',
-                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                    ),
-                    if (widget.orderItem.remarks != null && widget.orderItem.remarks!.isNotEmpty)
-                      TextSpan(
-                        text: 'Specifications: ${widget.orderItem.remarks}\n',
-                        style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-                      ),
-                  ],
-                ),
-                showCursor: true,
-                cursorColor: Colors.blue,
-                cursorWidth: 2.0,
-                style: const TextStyle(fontSize: 14.0, color: Colors.black87),
-              ),
-              const SizedBox(height: 12.0),
-
-              if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
-                _buildSelectableButtons(),
-
-              Row(
+      child: Stack(
+        children: [
+          Card(
+            color: Colors.white.withOpacity(0.9),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0), // Increased padding for elegance
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AddToCartButtonGrid(
-                    selectedQuantity: widget.selectedQty,
-                    orderItem: widget.orderItem,
-                    slotIndex: widget.slotIndex,
-                    slot: widget.selectedSlot,
-                    price: widget.selectedPrice ?? widget.orderItem.price,
+                  const SizedBox(height: 10.0),
+                  SizedBox(
+                    height: 200,
+                    child: ImageCarousal(images: lisTImages),
                   ),
-                  const Spacer(),
-                  GridQtySelector(onChanged: (int value) {
-                    setState(() {
-                      widget.selectedQty = value;
-                    });
-                  }),
+                  const SizedBox(height: 12.0),
+
+                  // Selectable Text that includes all the details in one block
+                  SelectableText.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Item ID: ${widget.orderItem.itemId.trim()}\n',
+                          style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                        ),
+                        TextSpan(
+                          text: 'Product Name: $orderItmName\n',
+                          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: 'Category: ${widget.orderItem.category ?? ''}\n',
+                          style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                        ),
+                        TextSpan(
+                          text: 'Subcategory: ${widget.orderItem.subCategory ?? ''}\n',
+                          style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                        ),
+                        TextSpan(
+                          text: 'Price: ₹${selectedPrice?.toString() ?? widget.orderItem.price ?? ''}\n',
+                          style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                        ),
+                        if (widget.orderItem.remarks != null && widget.orderItem.remarks!.isNotEmpty)
+                          TextSpan(
+                            text: 'Specifications: ${widget.orderItem.remarks}\n',
+                            style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                          ),
+                      ],
+                    ),
+                    showCursor: true,
+                    cursorColor: Colors.blue,
+                    cursorWidth: 2.0,
+                    style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                  ),
+                  const SizedBox(height: 12.0),
+
+                  if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
+                    _buildSelectableButtons(),
+
+                  Row(
+                    children: [
+                      AddToCartButtonGrid(
+                        selectedQuantity: widget.selectedQty,
+                        orderItem: widget.orderItem,
+                        slotIndex: widget.slotIndex,
+                        slot: widget.selectedSlot,
+                        price: widget.selectedPrice ?? widget.orderItem.price,
+                      ),
+                      const Spacer(),
+                      GridQtySelector(onChanged: (int value) {
+                        setState(() {
+                          widget.selectedQty = value;
+                        });
+                      }),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+
+          // Positioned "copy image" icon at the top right
+          Positioned(
+            top: 10,
+            right: 10,
+            child: IconButton(
+              icon: const Icon(Icons.copy, color: Colors.black54), // Copy icon
+              onPressed: () {
+                if (imagePaths != null && imagePaths.isNotEmpty) {
+                  Clipboard.setData(ClipboardData(text: imagePaths.first)); // Copy first image URL to clipboard
+                  TopSnackBar.show(context, 'Image URL copied to clipboard');
+                /*  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Image URL copied to clipboard')),
+                  );*/
+                } else {
+                  TopSnackBar.show(context,'No image available to copy');
+                /*  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('No image available to copy')),
+                  );*/
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
-
 
   Widget _buildLabel(String text) {
     return SelectableText(
@@ -168,7 +199,6 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     });
                   },
                   child: Container(
-                  //  padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 3), // Smaller padding for smaller buttons
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.blueAccent : Colors.white, // Highlight if selected
                       borderRadius: BorderRadius.circular(30.0), // Oval shape
@@ -182,7 +212,6 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                         slot,
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.black, // Change text color based on selection
-                          //fontWeight: FontWeight.bold,
                           fontSize: 16.0, // Smaller font size
                         ),
                       ),
