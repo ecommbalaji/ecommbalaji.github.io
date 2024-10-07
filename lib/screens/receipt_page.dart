@@ -6,6 +6,7 @@ import 'package:htmltopdfwidgets/htmltopdfwidgets.dart' as html2pdf;
 import 'package:intl/intl.dart';
 import 'package:webcatalog/screens/success_page.dart';
 import 'dart:html' as html;
+import '../snackbar/top_snackbar.dart';
 import '../vo/order_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -447,10 +448,11 @@ class ReceiptPage extends StatelessWidget {
         );
       } else {
         print('Failed to send message: ${response.statusCode}');
-        const snackBar = SnackBar(
+      /*  const snackBar = SnackBar(
           content: Text("Request Failed, Contact Support!"),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);*/
+        TopSnackBar.show(context, 'Request Failed, Contact Support!');
       }
     } catch (e) {
       print('Error: $e');
