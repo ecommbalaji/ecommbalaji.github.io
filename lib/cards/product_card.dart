@@ -66,46 +66,48 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                 child: ImageCarousal(images: lisTImages),
               ),
               const SizedBox(height: 12.0),
-              // Item ID
-              _buildLabel('Item ID: ${widget.orderItem.itemId.trim()}'),
-              const SizedBox(height: 6.0),
-              // Product Name
-              Tooltip(
-                message: orderItmName,
-                child: Text(
-                  orderItmName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0, // Slightly larger font
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+
+              // Selectable Text that includes all the details in one block
+              SelectableText.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Item ID: ${widget.orderItem.itemId.trim()}\n',
+                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                    ),
+                    TextSpan(
+                      text: 'Product Name: $orderItmName\n',
+                      style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: 'Category: ${widget.orderItem.category ?? ''}\n',
+                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                    ),
+                    TextSpan(
+                      text: 'Subcategory: ${widget.orderItem.subCategory ?? ''}\n',
+                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                    ),
+                    TextSpan(
+                      text: 'Price: ₹${selectedPrice?.toString() ?? widget.orderItem.price ?? ''}\n',
+                      style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                    ),
+                    if (widget.orderItem.remarks != null && widget.orderItem.remarks!.isNotEmpty)
+                      TextSpan(
+                        text: 'Specifications: ${widget.orderItem.remarks}\n',
+                        style: const TextStyle(fontSize: 14.0, color: Colors.black87),
+                      ),
+                  ],
                 ),
+                showCursor: true,
+                cursorColor: Colors.blue,
+                cursorWidth: 2.0,
+                style: const TextStyle(fontSize: 14.0, color: Colors.black87),
               ),
-              const SizedBox(height: 6.0),
-              // Product Category
-              _buildLabel('Category: ${widget.orderItem.category ?? ''}'),
-              const SizedBox(height: 6.0),
-              // Product Subcategory
-              _buildLabel('Subcategory: ${widget.orderItem.subCategory ?? ''}'),
-              const SizedBox(height: 6.0),
-              // Price Display
-              _buildLabel('Price: ₹${selectedPrice?.toString() ?? widget.orderItem.price ?? ''}'),
               const SizedBox(height: 12.0),
-              // Selectable Buttons for Slot Selection
+
               if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
                 _buildSelectableButtons(),
 
-              // Specifications
-              if (widget.orderItem.remarks != null && widget.orderItem.remarks!.isNotEmpty) ...[
-                const SizedBox(height: 12.0),
-                Expanded(
-                  child: SpecificationPopup(specs: 'Specifications: ${widget.orderItem.remarks ?? ''}'),
-                ),
-              ],
-
-
-              // Add to Cart Button
               Row(
                 children: [
                   AddToCartButtonGrid(
@@ -130,8 +132,9 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     );
   }
 
+
   Widget _buildLabel(String text) {
-    return Text(
+    return SelectableText(
       text,
       style: const TextStyle(fontSize: 14.0, color: Colors.black87), // More subdued color
     );
