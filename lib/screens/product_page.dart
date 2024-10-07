@@ -50,36 +50,50 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
         backgroundColor: Colors.indigo[900],
         elevation: 0,
         titleSpacing: 20,
-        title: Container(
-          height: 40,
-          width: MediaQuery.of(context).size.width * 0.5,
-          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: const Offset(0, 3),
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            // Calculate the width based on the hint text length
+            final hintText = 'Search By Products/Item Id/Category/Subcategory';
+            final textPainter = TextPainter(
+              text: TextSpan(text: hintText, style: const TextStyle(fontSize: 16.0)),
+              maxLines: 1,
+              textDirection: TextDirection.ltr,
+            );
+            textPainter.layout(minWidth: 0, maxWidth: constraints.maxWidth);
+
+            return Container(
+              height: 40,
+              width: textPainter.width + 90, // Adjust width with some padding
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: TextField(
-            onChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-            decoration: const InputDecoration(
-              hintText: 'Search By Products/Item Id/Category/Subcategory',
-              border: InputBorder.none,
-              prefixIcon: Icon(Icons.search, color: Colors.grey),
-            ),
-          ),
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  border: InputBorder.none,
+                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                ),
+              ),
+            );
+          },
         ),
+
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
