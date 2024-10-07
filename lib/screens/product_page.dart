@@ -96,7 +96,7 @@ class _ProductPageState extends State<ProductPage> with SingleTickerProviderStat
 
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
+            padding: const EdgeInsets.only(right: 100.0),
             child: CascadingDropdown(
               orderItems: orderItemList,
               onCategoryChanged: (String? value) {
