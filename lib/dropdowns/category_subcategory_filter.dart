@@ -7,7 +7,7 @@ class CascadingDropdown extends StatefulWidget {
   final ValueChanged<String?> onCategoryChanged;
   final ValueChanged<String?> onSubCategoryChanged;
 
-  const CascadingDropdown({super.key, 
+  const CascadingDropdown({super.key,
     required this.orderItems,
     required this.onCategoryChanged,
     required this.onSubCategoryChanged,
@@ -96,17 +96,17 @@ class _CascadingDropdownState extends State<CascadingDropdown> {
     required ValueChanged<String?> onChanged,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0), // Adjusted padding
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Added margin
+      height: 40, // Set height to match the search box
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0), // Adjust margin for spacing
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(6.0), // Adjusted border radius
+        borderRadius: BorderRadius.circular(25.0), // Make it oval
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15), // Adjusted shadow
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            color: Colors.grey.withOpacity(0.2), // Subtle shadow
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
