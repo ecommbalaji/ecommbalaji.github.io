@@ -7,7 +7,6 @@ import 'package:webcatalog/vo/order_item.dart';
 import '../button/add_to_cart_button_grid.dart';
 import '../carousal/image_carousal.dart';
 import '../image/cached_image.dart';
-
 import 'package:flutter/services.dart'; // For Clipboard
 
 class ProductCard extends StatefulWidget {
@@ -30,10 +29,12 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
   @override
   void initState() {
     super.initState();
+
+    // If slotPriceMapping is available, initialize the first slot and price
     if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty) {
-      widget.selectedSlot = widget.orderItem.slotPriceMapping!.keys.first;
-      selectedPrice = widget.orderItem.slotPriceMapping![widget.selectedSlot];
-      widget.selectedPrice = selectedPrice.toString();
+      widget.selectedSlot = widget.orderItem.slotPriceMapping!.keys.first; // First slot by default
+      selectedPrice = widget.orderItem.slotPriceMapping![widget.selectedSlot]; // Price for the first slot
+      widget.selectedPrice = selectedPrice?.toString();
     }
   }
 
@@ -53,17 +54,17 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
 
     return Material(
       color: Colors.white,
-      elevation: 0,
+      elevation: 4.0,
       child: Stack(
         children: [
           Card(
-            color: Colors.white.withOpacity(0.9),
-            elevation: 0,
+            color: Colors.white.withOpacity(0.95),
+            elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0), // Increased padding for elegance
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -73,8 +74,6 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     child: ImageCarousal(images: lisTImages),
                   ),
                   const SizedBox(height: 12.0),
-
-                  // Selectable Text that includes all the details in one block
                   SelectableText.rich(
                     TextSpan(
                       children: [
@@ -111,10 +110,9 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                     style: const TextStyle(fontSize: 14.0, color: Colors.black87),
                   ),
                   const SizedBox(height: 12.0),
-
                   if (widget.orderItem.slotPriceMapping != null && widget.orderItem.slotPriceMapping!.isNotEmpty)
                     _buildSelectableButtons(),
-
+                  const Spacer(),
                   Row(
                     children: [
                       AddToCartButtonGrid(
@@ -136,25 +134,17 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               ),
             ),
           ),
-
-          // Positioned "copy image" icon at the top right
           Positioned(
             top: 10,
             right: 10,
             child: IconButton(
-              icon: const Icon(Icons.copy, color: Colors.black54), // Copy icon
+              icon: const Icon(Icons.copy, color: Colors.black54),
               onPressed: () {
                 if (imagePaths != null && imagePaths.isNotEmpty) {
-                  Clipboard.setData(ClipboardData(text: imagePaths.first)); // Copy first image URL to clipboard
+                  Clipboard.setData(ClipboardData(text: imagePaths.first));
                   TopSnackBar.show(context, 'Image URL copied to clipboard');
-                /*  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Image URL copied to clipboard')),
-                  );*/
                 } else {
-                  TopSnackBar.show(context,'No image available to copy');
-                /*  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('No image available to copy')),
-                  );*/
+                  TopSnackBar.show(context, 'No image available to copy');
                 }
               },
             ),
@@ -164,31 +154,25 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
     );
   }
 
-  Widget _buildLabel(String text) {
-    return SelectableText(
-      text,
-      style: const TextStyle(fontSize: 14.0, color: Colors.black87), // More subdued color
-    );
-  }
-
   Widget _buildSelectableButtons() {
     return Container(
-      height: 90, // Set a fixed height for the scrollable area
+      height: 90,
       child: Row(
         children: [
           Expanded(
             child: GridView.builder(
               controller: _scrollController,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // At least 3 buttons in a row
-                childAspectRatio: 4, // Adjusted aspect ratio for oval shape
+                crossAxisCount: 3,
+                childAspectRatio: 2.5,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
               ),
               itemCount: widget.orderItem.slotPriceMapping!.length,
               itemBuilder: (context, index) {
                 String slot = widget.orderItem.slotPriceMapping!.keys.elementAt(index);
-                bool isSelected = widget.selectedSlot == slot; // Check if the slot is selected
+                bool isSelected = widget.selectedSlot == slot;
+
                 return GestureDetector(
                   onTap: () {
                     setState(() {
@@ -200,19 +184,27 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.blueAccent : Colors.white, // Highlight if selected
-                      borderRadius: BorderRadius.circular(30.0), // Oval shape
+                      color: isSelected ? Colors.blueAccent : Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
                       border: Border.all(
-                        color: Colors.blueAccent,
-                        width: 1,
+                        color: isSelected ? Colors.blueAccent : Colors.grey.withOpacity(0.6),
+                        width: 1.0,
                       ),
+                      boxShadow: isSelected
+                          ? [BoxShadow(color: Colors.blueAccent.withOpacity(0.3), blurRadius: 8)]
+                          : null,
                     ),
+                    padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                     child: Center(
-                      child: Text(
-                        slot,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black, // Change text color based on selection
-                          fontSize: 16.0, // Smaller font size
+                      child: FittedBox(
+                        child: Text(
+                          slot,
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black87,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -226,7 +218,6 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
               IconButton(
                 icon: const Icon(Icons.arrow_upward),
                 onPressed: () {
-                  // Scroll up
                   _scrollController.animateTo(
                     _scrollController.position.pixels - 50,
                     duration: const Duration(milliseconds: 300),
@@ -234,11 +225,10 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
                   );
                 },
               ),
-              const SizedBox(height: 8.0), // Space between the button and the arrows
+              const SizedBox(height: 8.0),
               IconButton(
                 icon: const Icon(Icons.arrow_downward),
                 onPressed: () {
-                  // Scroll down
                   _scrollController.animateTo(
                     _scrollController.position.pixels + 50,
                     duration: const Duration(milliseconds: 300),
