@@ -3,11 +3,12 @@ import 'package:webcatalog/dropdowns/grid_qty_selector.dart';
 import 'package:webcatalog/popup/specification_popup.dart';
 import 'package:webcatalog/snackbar/top_snackbar.dart';
 import 'package:webcatalog/vo/order_item.dart';
-
+import 'dart:html' as html;
 import '../button/add_to_cart_button_grid.dart';
 import '../carousal/image_carousal.dart';
 import '../image/cached_image.dart';
 import 'package:flutter/services.dart'; // For Clipboard
+import 'package:http/http.dart' as http;
 
 class ProductCard extends StatefulWidget {
   final OrderItem orderItem;
@@ -138,11 +139,11 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
             top: 10,
             right: 10,
             child: IconButton(
-              icon: const Icon(Icons.copy, color: Colors.black54),
+              icon: const Icon(Icons.download, color: Colors.black54, semanticLabel: 'Download Image(s)',),
               onPressed: () {
                 if (imagePaths != null && imagePaths.isNotEmpty) {
-                  Clipboard.setData(ClipboardData(text: imagePaths.first));
-                  TopSnackBar.show(context, 'Image URL copied to clipboard');
+                  downloadImages(context,imagePaths);
+                  TopSnackBar.show(context, 'Image(s) downloaded');
                 } else {
                   TopSnackBar.show(context, 'No image available to copy');
                 }
@@ -242,7 +243,39 @@ class _ProductCardState extends State<ProductCard> with AutomaticKeepAliveClient
       ),
     );
   }
+  Future<void> downloadImages(BuildContext context, List<String>? imagePaths) async {
+    try {
+      if (imagePaths!.isNotEmpty) {
+        for (var imagePath in imagePaths) {
+          // Download each image one after another
+          final response = await http.get(Uri.parse(imagePath));
 
+          if (response.statusCode == 200) {
+            final fileName = imagePath.split('/').last;
+
+            final blob = html.Blob([Uint8List.fromList(response.bodyBytes)], 'image/jpeg');
+            final url = html.Url.createObjectUrlFromBlob(blob);
+            final anchor = html.AnchorElement(href: url)
+              ..setAttribute('download', fileName)
+              ..click();
+            html.Url.revokeObjectUrl(url);
+
+            // Optionally, you can show a snack bar or notification for each download
+            TopSnackBar.show(context, 'Downloaded: $fileName');
+
+            // Introduce a small delay if needed, to manage consecutive downloads
+            await Future.delayed(const Duration(milliseconds: 500));
+          } else {
+            TopSnackBar.show(context, 'Failed to download: $imagePath');
+          }
+        }
+      } else {
+        TopSnackBar.show(context, 'No images available to download');
+      }
+    } catch (e) {
+      TopSnackBar.show(context, 'Error downloading image(s): $e');
+    }
+  }
   @override
   bool get wantKeepAlive => true;
 }
