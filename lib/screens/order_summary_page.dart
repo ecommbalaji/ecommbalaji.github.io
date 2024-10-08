@@ -43,10 +43,9 @@ class OrderSummaryPage extends StatelessWidget {
               },
             ),
           ),
-      Flexible(
-        flex: 1,
-         child: Padding(
-            padding: const EdgeInsets.all(8.0),
+
+          Padding(
+            padding: const EdgeInsets.all(1.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -63,7 +62,7 @@ class OrderSummaryPage extends StatelessWidget {
               child: const Text('Contact Details'),
             ),
           )
-      ),
+
         ],
       ),
     );
