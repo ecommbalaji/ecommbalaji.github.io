@@ -119,15 +119,12 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
                         Center(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 40.0,
-                                vertical: 15.0,
-                              ),
-                              backgroundColor: Colors.deepPurpleAccent,
+                              backgroundColor: Colors.deepPurple,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
                             onPressed: () => _navigateToOrderReceipt(context),
                             child: const Text(
                               'Proceed To Checkout',

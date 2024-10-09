@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:htmltopdfwidgets/htmltopdfwidgets.dart' as html2pdf;
@@ -19,16 +18,18 @@ class ReceiptPage extends StatelessWidget {
   final String email;
   final String address;
 
-  ReceiptPage({super.key, 
+  ReceiptPage({
+    super.key,
     required this.orderItems,
     required this.orderNumber,
     required this.nameOrBranch,
     required this.mobile,
     required this.email,
-    required this.address
+    required this.address,
   });
 
   final logger = Logger();
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -39,6 +40,7 @@ class ReceiptPage extends StatelessWidget {
     final totalQuantity = orderItems.fold(0, (sum, item) => sum + item.qty);
     final splitAddress = address.split(",").join(",\n");
     double totalSum = 0;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -46,229 +48,212 @@ class ReceiptPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
-        )
-
+        ),
+        backgroundColor: Colors.deepPurple,
+        elevation: 5.0,
       ),
-      body:
-      SingleChildScrollView(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(24.0),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.deepPurple.shade50],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Aligning order number and customer details horizontally
+              _buildOrderAndCustomerDetails(
+                  orderNumber, formattedDate, nameOrBranch, mobile, email, splitAddress),
+              const SizedBox(height: 20),
+
+              // Scrollable table for order items
+              _buildOrderItemsTable(orderItems, totalSum),
+              const SizedBox(height: 20),
+
+              // Footer with total products and total quantity
+              _buildFooter(totalProducts, totalQuantity),
+
+              const SizedBox(height: 40),
+
+              // Centered submit button
+              _buildSubmitButton(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOrderAndCustomerDetails(
+      String orderNumber,
+      String formattedDate,
+      String nameOrBranch,
+      String mobile,
+      String email,
+      String splitAddress) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Aligning order number and customer details horizontally to the right
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Order Number: $orderNumber',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Text(
-                      'Date: $formattedDate',
-                      style: const TextStyle(color: Colors.black, fontSize: 20),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Customer Details:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Text(
-                      'Name or Branch Name: $nameOrBranch',
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-                    Text(
-                      'Mobile Number: $mobile',
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-                    Text(
-                      'Email : $email',
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-
-                       Text(
-                        'Address: $splitAddress',
-                        style: const TextStyle(color: Colors.black, fontSize: 18),
-                      ),
-
-
-                  ],
-
-                ),
-              ],
+            Text(
+              'Order Number: $orderNumber',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.deepPurple.shade800,
+                fontSize: 18,
+              ),
             ),
-            // Scrollable table
+            Text(
+              'Date: $formattedDate',
+              style: const TextStyle(
+                color: Colors.black54,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Customer Details:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 18,
+              ),
+            ),
+            Text(
+              'Name or Branch: $nameOrBranch',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Mobile: $mobile',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Email: $email',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Address:\n$splitAddress',
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-
-
-       Center(
+  Widget _buildOrderItemsTable(List<OrderItem> orderItems, double totalSum) {
+    return Center(
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+        scrollDirection: Axis.horizontal,
         child: DataTable(
           columnSpacing: 20,
+          headingRowColor: MaterialStateProperty.resolveWith((states) => Colors.deepPurple.shade100),
           columns: const [
-            DataColumn(
-              label: Text(
-                'Sr No',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Item Id',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Product Name',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Category',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Subcategory',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Slot',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Price (per Unit)',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-
-            DataColumn(
-              label: Text(
-                'Quantity',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Total',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-            ),
+            DataColumn(label: Text('Sr No')),
+            DataColumn(label: Text('Item Id')),
+            DataColumn(label: Text('Product Name')),
+            DataColumn(label: Text('Category')),
+            DataColumn(label: Text('Subcategory')),
+            DataColumn(label: Text('Slot')),
+            DataColumn(label: Text('Price (per Unit)')),
+            DataColumn(label: Text('Quantity')),
+            DataColumn(label: Text('Total')),
           ],
-          rows: orderItems
-              .asMap()
-              .entries
-              .map(
-                (entry) {
-              final item = entry.value;
-              final total = double.parse(item.price!) * item.qty;
-              totalSum += total;
-              return DataRow(
-                color: entry.key % 2 == 0 ? WidgetStateProperty.all(Colors.grey[100]) : WidgetStateProperty.all(Colors.white),
-                cells: [
-                  DataCell(Text('${entry.key + 1}', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text(item.itemId ?? '', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text(item.productName, style: const TextStyle(fontSize: 16))),
-                  DataCell(Text(item.category ?? '', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text(item.subCategory ?? '', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text(item.selectedSlot ?? '', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text('₹${item.price}', style: const TextStyle(fontSize: 16))),
-                  DataCell(Text('${item.qty}', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
-                  DataCell(Text('₹$total', style: const TextStyle(fontSize: 16), textAlign: TextAlign.center)),
-                ],
-              );
-            },
-          )
-              .toList()
-            ..add(DataRow(
+          rows: orderItems.asMap().entries.map((entry) {
+            final item = entry.value;
+            final total = double.parse(item.price!) * item.qty;
+            totalSum += total;
+            return DataRow(
+              color: MaterialStateProperty.resolveWith(
+                    (states) => entry.key % 2 == 0 ? Colors.grey.shade100 : Colors.white,
+              ),
               cells: [
-                const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                const DataCell(Text('')),
-                DataCell(Text('₹${totalSum.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+                DataCell(Text('${entry.key + 1}')),
+                DataCell(Text(item.itemId ?? '')),
+                DataCell(Text(item.productName)),
+                DataCell(Text(item.category ?? '')),
+                DataCell(Text(item.subCategory ?? '')),
+                DataCell(Text(item.selectedSlot ?? '')),
+                DataCell(Text('₹${item.price}')),
+                DataCell(Text('${item.qty}')),
+                DataCell(Text('₹$total')),
               ],
-            )),
+            );
+          }).toList()
+            ..add(DataRow(cells: [
+              const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold))),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              const DataCell(Text('')),
+              DataCell(Text('₹${totalSum.toStringAsFixed(2)}',
+                  style: const TextStyle(fontWeight: FontWeight.bold))),
+            ])),
         ),
       ),
-    ),
+    );
+  }
 
-            const SizedBox(height: 20),
-            // Footer with total products and total quantity
-            Align(
-              alignment: Alignment.centerRight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Total Products: $totalProducts',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
-                  ),
-                  Text(
-                    'Total Quantity: $totalQuantity',
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16),
-                  ),
+  Widget _buildFooter(int totalProducts, int totalQuantity) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            'Total Products: $totalProducts',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Text(
+            'Total Quantity: $totalQuantity',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
 
-                ],
-              ),
+  Widget _buildSubmitButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            const SizedBox(height: 20),
-            // Centered Submit Button
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Center the buttons horizontally
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white
-                  ),
-                  onPressed: () async {
-                    await  getPresignedUrl("$orderNumber.pdf").then((presignedurl) async {
-                      await convertHtmlToPdf(presignedurl).then((_){
-                        invokeSnsApi(context, orderNumber,  presignedurl.split('?').first);
-                      });
-                    });
-                  },
-                  child: const Text('Submit'),
-                )
-              ],
-            ),
-          ],
+          ),
+          onPressed: () async {
+            await getPresignedUrl("$orderNumber.pdf").then((presignedUrl) async {
+              await convertHtmlToPdf(presignedUrl).then((_) {
+                invokeSnsApi(context, orderNumber, presignedUrl.split('?').first);
+              });
+            });
+          },
+          child: const Text(
+            'Submit Order',
+            style: TextStyle(fontSize: 18),
+          ),
         ),
-      )
-    ),
-
+      ],
     );
   }
 
