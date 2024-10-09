@@ -19,6 +19,7 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+
   void _navigateToOrderReceipt(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final orderItems = context.read<OrderCubit>().state;
@@ -30,8 +31,8 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
             orderNumber: generateCustomString(),
             nameOrBranch: _nameBranchController.text,
             mobile: _mobileController.text,
-            email: _emailController.text,
-            address: _addressController.text,
+            email: _emailController.text.isNotEmpty ? _emailController.text : 'N/A',
+            address: _addressController.text.isNotEmpty ? _addressController.text : 'N/A',
           ),
         ),
       );
@@ -42,89 +43,106 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Customer Details'),
+        title: const Text(
+          'Customer Details',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            letterSpacing: 1.2,
+          ),
+        ),
+        backgroundColor: Colors.deepPurpleAccent,
+        elevation: 5,
       ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: BlocBuilder<OrderCubit, List<OrderItem>>(
-              builder: (context, orderItems) {
-                return Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextFormField(
-                        controller: _nameBranchController,
-                        decoration: const InputDecoration(
+      body: SingleChildScrollView(
+        child: Center(
+          child: FractionallySizedBox(
+            widthFactor: 0.8,
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: BlocBuilder<OrderCubit, List<OrderItem>>(
+                builder: (context, orderItems) {
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTitle('Enter your details'),
+                        const SizedBox(height: 20.0),
+                        _buildTextField(
+                          controller: _nameBranchController,
                           labelText: 'Name / Branch',
-                          border: OutlineInputBorder(),
+                          hintText: 'Enter your name or branch name',
+                          icon: Icons.person,
+                          validatorMessage: 'Please enter your name or branch name',
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name or branch name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      TextFormField(
-                        controller: _mobileController,
-                         decoration: const InputDecoration(
+                        const SizedBox(height: 20.0),
+                        _buildTextField(
+                          controller: _mobileController,
                           labelText: 'Mobile Number',
-                          border: OutlineInputBorder(),
+                          hintText: 'Enter your mobile number',
+                          icon: Icons.phone,
+                          keyboardType: TextInputType.phone,
+                          validatorMessage: 'Please enter your mobile number',
+                          additionalValidator: (value) {
+                            if (!RegExp(r'^\+?[0-9]{10,}$').hasMatch(value!)) {
+                              return 'Please enter a valid mobile number';
+                            }
+                            return null;
+                          },
                         ),
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number';
-                          }
-                          if (!RegExp(r'^\+?[0-9]{10,}$').hasMatch(value)) {
-                            return 'Please enter a valid mobile number (no spaces)';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
+                        const SizedBox(height: 20.0),
+                        _buildTextField(
+                          controller: _emailController,
                           labelText: 'Email',
-                          border: OutlineInputBorder(),
+                          hintText: 'Enter your email (optional)',
+                          icon: Icons.email,
+                          keyboardType: TextInputType.emailAddress,
+                          additionalValidator: (value) {
+                            // Email field is optional, only validate if it's not empty
+                            if (value != null && value.isNotEmpty && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value != null && value.isNotEmpty && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16.0),
-                      TextFormField(
-                        maxLines: 5,
-                        controller: _addressController,
-                        decoration: const InputDecoration(
+                        const SizedBox(height: 20.0),
+                        _buildTextField(
+                          controller: _addressController,
                           labelText: 'Address',
-                          border: OutlineInputBorder(),
+                          hintText: 'Enter your address (optional)',
+                          icon: Icons.location_on,
+                          maxLines: 5,
+                          validatorMessage: null, // Address is not mandatory
                         ),
-                        keyboardType: TextInputType.streetAddress,
-                      ),
-                      const SizedBox(height: 16.0),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white
+                        const SizedBox(height: 30.0),
+                        Center(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40.0,
+                                vertical: 15.0,
+                              ),
+                              backgroundColor: Colors.deepPurpleAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onPressed: () => _navigateToOrderReceipt(context),
+                            child: const Text(
+                              'Proceed To Checkout',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
-                        onPressed: () => _navigateToOrderReceipt(context),
-                        child: const Text('Proceed To Checkout'),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -132,20 +150,66 @@ class _CustomerFormWidgetState extends State<CustomerFormWidget> {
     );
   }
 
+  Widget _buildTitle(String text) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Colors.deepPurpleAccent,
+        letterSpacing: 1.2,
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required String hintText,
+    required IconData icon,
+    String? validatorMessage,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    String? Function(String?)? additionalValidator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        prefixIcon: Icon(icon, color: Colors.deepPurpleAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.0),
+          borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.0),
+          borderSide: const BorderSide(color: Colors.deepPurpleAccent, width: 2),
+        ),
+        contentPadding: const EdgeInsets.all(16.0),
+      ),
+      validator: (value) {
+        if (validatorMessage != null && (value == null || value.isEmpty)) {
+          return validatorMessage;
+        }
+        if (additionalValidator != null) {
+          return additionalValidator(value);
+        }
+        return null;
+      },
+    );
+  }
+
   String generateCustomString() {
-    // 1. Get current date and time
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(now);
-
-    // 2. Generate 4 random alphabets
     const chars = 'abcdefghijklmnopqrstuvwxyz';
     Random random = Random();
     String randomAlphabets = String.fromCharCodes(
       Iterable.generate(4, (_) => chars.codeUnitAt(random.nextInt(chars.length))),
     );
-
-    // 3. Combine date and alphabets
-    String result = formattedDate + randomAlphabets;
-    return result.toUpperCase();
+    return (formattedDate + randomAlphabets).toUpperCase();
   }
 }

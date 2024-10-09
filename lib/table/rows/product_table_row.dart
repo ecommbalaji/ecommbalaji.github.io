@@ -33,6 +33,14 @@ class _DataRowWidgetState extends State<DataRowWidget> {
     // Populate slot options from SlotPriceMapping
     if (widget.item.slotPriceMapping != null) {
       slotOptions = widget.item.slotPriceMapping!.keys.toList();
+
+      // Automatically select the first slot if available
+      if (slotOptions.isNotEmpty) {
+        selectedSlot = slotOptions[0];
+        widget.selectedSlot = selectedSlot; // Set the default selected slot
+        widget.slotIndex = 0;
+        widget.slotPrice = _getPriceBasedOnSlot(); // Set the default price based on the first slot
+      }
     }
   }
 
@@ -64,7 +72,10 @@ class _DataRowWidgetState extends State<DataRowWidget> {
           flex: (0.15 * 100).toInt(),
           child: AddToCartButtonTable(
             orderItem: widget.gridItems[widget.index],
-            selectedQuantity: widget.selectedQty, slotIndex: widget.slotIndex, slotValue: widget.selectedSlot , slotPrice: widget.slotPrice,
+            selectedQuantity: widget.selectedQty,
+            slotIndex: widget.slotIndex,
+            slotValue: widget.selectedSlot,
+            slotPrice: widget.slotPrice ?? widget.item.price,
           ),
         ),
       ],
