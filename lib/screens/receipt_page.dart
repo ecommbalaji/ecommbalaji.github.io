@@ -155,59 +155,66 @@ class ReceiptPage extends StatelessWidget {
 
   Widget _buildOrderItemsTable(List<OrderItem> orderItems, double totalSum) {
     return Center(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columnSpacing: 20,
-          headingRowColor: MaterialStateProperty.resolveWith((states) => Colors.deepPurple.shade100),
-          columns: const [
-            DataColumn(label: Text('Sr No')),
-            DataColumn(label: Text('Item Id')),
-            DataColumn(label: Text('Product Name')),
-            DataColumn(label: Text('Category')),
-            DataColumn(label: Text('Subcategory')),
-            DataColumn(label: Text('Slot')),
-            DataColumn(label: Text('Price (per Unit)')),
-            DataColumn(label: Text('Quantity')),
-            DataColumn(label: Text('Total')),
-          ],
-          rows: orderItems.asMap().entries.map((entry) {
-            final item = entry.value;
-            final total = double.parse(item.price!) * item.qty;
-            totalSum += total;
-            return DataRow(
-              color: MaterialStateProperty.resolveWith(
-                    (states) => entry.key % 2 == 0 ? Colors.grey.shade100 : Colors.white,
-              ),
-              cells: [
-                DataCell(Text('${entry.key + 1}')),
-                DataCell(Text(item.itemId ?? '')),
-                DataCell(Text(item.productName)),
-                DataCell(Text(item.category ?? '')),
-                DataCell(Text(item.subCategory ?? '')),
-                DataCell(Text(item.selectedSlot ?? '')),
-                DataCell(Text('₹${item.price}')),
-                DataCell(Text('${item.qty}')),
-                DataCell(Text('₹$total')),
+      child: Container(
+        height: 300, // Set a fixed height for the scrollable table
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical, // Make the table scroll vertically
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal, // Preserve horizontal scrolling
+            child: DataTable(
+              columnSpacing: 20,
+              headingRowColor: MaterialStateProperty.resolveWith((states) => Colors.deepPurple.shade100),
+              columns: const [
+                DataColumn(label: Text('Sr No')),
+                DataColumn(label: Text('Item Id')),
+                DataColumn(label: Text('Product Name')),
+                DataColumn(label: Text('Category')),
+                DataColumn(label: Text('Subcategory')),
+                DataColumn(label: Text('Slot')),
+                DataColumn(label: Text('Price (per Unit)')),
+                DataColumn(label: Text('Quantity')),
+                DataColumn(label: Text('Total')),
               ],
-            );
-          }).toList()
-            ..add(DataRow(cells: [
-              const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold))),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              const DataCell(Text('')),
-              DataCell(Text('₹${totalSum.toStringAsFixed(2)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold))),
-            ])),
+              rows: orderItems.asMap().entries.map((entry) {
+                final item = entry.value;
+                final total = double.parse(item.price!) * item.qty;
+                totalSum += total;
+                return DataRow(
+                  color: MaterialStateProperty.resolveWith(
+                        (states) => entry.key % 2 == 0 ? Colors.grey.shade100 : Colors.white,
+                  ),
+                  cells: [
+                    DataCell(Text('${entry.key + 1}')),
+                    DataCell(Text(item.itemId ?? '')),
+                    DataCell(Text(item.productName)),
+                    DataCell(Text(item.category ?? '')),
+                    DataCell(Text(item.subCategory ?? '')),
+                    DataCell(Text(item.selectedSlot ?? '')),
+                    DataCell(Text('₹${item.price}')),
+                    DataCell(Text('${item.qty}')),
+                    DataCell(Text('₹$total')),
+                  ],
+                );
+              }).toList()
+                ..add(DataRow(cells: [
+                  const DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold))),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  const DataCell(Text('')),
+                  DataCell(Text('₹${totalSum.toStringAsFixed(2)}',
+                      style: const TextStyle(fontWeight: FontWeight.bold))),
+                ])),
+            ),
+          ),
         ),
       ),
     );
   }
+
 
   Widget _buildFooter(int totalProducts, int totalQuantity) {
     return Align(
